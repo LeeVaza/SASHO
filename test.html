@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медицинский тест по английскому языку</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f9fc;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        .test-info {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+        }
+        .question-block {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        .question-block:hover {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        .question-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .question-type {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        .options {
+            margin: 15px 0;
+        }
+        .option {
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option:hover {
+            background-color: #eef7ff;
+        }
+        .option.selected {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .option.correct {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .match-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .match-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        .match-pair {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px dashed #a0d2ff;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            font-weight: bold;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        .reset-btn {
+            background-color: #6c757d;
+        }
+        .reset-btn:hover {
+            background-color: #5a6268;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .page-indicator {
+            text-align: center;
+            margin: 20px 0;
+            color: #7f8c8d;
+        }
+        .answer-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: none;
+        }
+        .correct-answer {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .explanation {
+            font-style: italic;
+            margin-top: 5px;
+            color: #6c757d;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .question-block {
+                padding: 15px;
+            }
+            .match-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Медицинский тест по английскому языку</h1>
+        
+        <div class="test-info">
+            <p>Этот тест основан на материалах из файла "англ ответы.pdf". Он содержит различные типы вопросов: выбор правильного определения, поиск антонимов и синонимов, сопоставление, выбор правильного окончания предложения, перевод и составление предложений.</p>
+            <p>Всего вопросов: <span id="total-questions">0</span></p>
+        </div>
+        
+        <div id="test-content">
+            <!-- Вопросы будут вставлены сюда -->
+        </div>
+        
+        <div class="navigation">
+            <button id="prev-btn" onclick="changePage(-1)">← Назад</button>
+            <div class="page-indicator">Страница <span id="current-page">1</span> из <span id="total-pages">1</span></div>
+            <button id="next-btn" onclick="changePage(1)">Вперед →</button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="submit-btn" onclick="submitTest()">Проверить ответы</button>
+            <button class="reset-btn" onclick="resetTest()">Начать заново</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="score">Ваш результат: <span id="score-value">0</span> из <span id="total-questions-score">0</span> (<span id="percentage">0%</span>)</div>
+            <div id="detailed-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Вопросы из файла, сгруппированные по типам
+        const testData = {
+            // Страницы 1-2: Find the proper definition
+            definitions: [
+                {
+                    id: 1,
+                    type: "definition",
+                    question: "Find the proper definition: nose",
+                    options: ["organ to warm and filter the air", "little air-sacs", "a joint connecting the arm with the trunk"],
+                    correct: 0
+                },
+                {
+                    id: 2,
+                    type: "definition",
+                    question: "Find the proper definition: alveoli",
+                    options: ["organ to warm and filter the air", "little air-sacs", "a joint connecting the arm with the trunk"],
+                    correct: 1
+                },
+                {
+                    id: 3,
+                    type: "definition",
+                    question: "Find the proper definition: shoulder",
+                    options: ["organ to warm and filter the air", "little air-sacs", "a joint connecting the arm with the trunk"],
+                    correct: 2
+                },
+                {
+                    id: 4,
+                    type: "definition",
+                    question: "Find the proper definition: stomach",
+                    options: ["a reservoir for digesting and storing food", "a double blood pump", "a part of the body containing brain"],
+                    correct: 0
+                },
+                {
+                    id: 5,
+                    type: "definition",
+                    question: "Find the proper definition: heart",
+                    options: ["a reservoir for digesting and storing food", "a double blood pump", "a part of the body containing brain"],
+                    correct: 1
+                }
+            ],
+            
+            // Страницы 3-4: Give the opposite (антонимы)
+            antonyms: [
+                {
+                    id: 6,
+                    type: "antonym",
+                    question: "Give the opposite to: finger",
+                    options: ["toe", "hand", "thumb"],
+                    correct: 0
+                },
+                {
+                    id: 7,
+                    type: "antonym",
+                    question: "Give the opposite to: lower extremity",
+                    options: ["upper extremity", "internal extremity", "middle extremity"],
+                    correct: 0
+                },
+                {
+                    id: 8,
+                    type: "antonym",
+                    question: "Give the opposite to: inside",
+                    options: ["outside", "beside", "upside"],
+                    correct: 0
+                },
+                {
+                    id: 9,
+                    type: "antonym",
+                    question: "Give the opposite to: to exclude",
+                    options: ["to include", "to conclude", "to excise"],
+                    correct: 0
+                },
+                {
+                    id: 10,
+                    type: "antonym",
+                    question: "Give the opposite to: long bone",
+                    options: ["short bone", "flat bone", "irregular bone"],
+                    correct: 0
+                }
+            ],
+            
+            // Страница 5: Give the synonyms (синонимы)
+            synonyms: [
+                {
+                    id: 11,
+                    type: "synonym",
+                    question: "Give the synonym to: chamber",
+                    options: ["cavity", "room", "space"],
+                    correct: 0
+                },
+                {
+                    id: 12,
+                    type: "synonym",
+                    question: "Give the synonym to: contain",
+                    options: ["include", "exclude", "confine"],
+                    correct: 0
+                },
+                {
+                    id: 13,
+                    type: "synonym",
+                    question: "Give the synonym to: take part",
+                    options: ["participate", "depart", "separate"],
+                    correct: 0
+                },
+                {
+                    id: 14,
+                    type: "synonym",
+                    question: "Give the synonym to: thorax",
+                    options: ["chest", "abdomen", "pelvis"],
+                    correct: 0
+                },
+                {
+                    id: 15,
+                    type: "synonym",
+                    question: "Give the synonym to: distinguish",
+                    options: ["differentiate", "extinguish", "assimilate"],
+                    correct: 0
+                }
+            ],
+            
+            // Страница 11-20: Choose the proper ending (выбор окончания предложения)
+            sentenceCompletion: [
+                {
+                    id: 16,
+                    type: "completion",
+                    question: "Choose the proper ending to complete the sentence: Abdomen is ...",
+                    options: ["located under the diaphragm", "contains heart and lungs", "located above the diaphragm"],
+                    correct: 0
+                },
+                {
+                    id: 17,
+                    type: "completion",
+                    question: "Choose the proper ending to complete the sentence: During respiration the exchange of gases takes place between:",
+                    options: ["the living organism and the lungs", "the living organism and the atmosphere", "the living organism and the plants"],
+                    correct: 1
+                },
+                {
+                    id: 18,
+                    type: "completion",
+                    question: "Choose the proper ending to complete the sentence: Each lung is surrounded by ...",
+                    options: ["a double-folded membrane", "a thin dome-shaped diaphragm", "a three-walled pleura"],
+                    correct: 0
+                },
+                {
+                    id: 19,
+                    type: "completion",
+                    question: "Choose the proper ending to complete the sentence: Interruption of breathing for only a few minutes may cause:",
+                    options: ["death", "muscular efforts", "respiratory diseases"],
+                    correct: 0
+                },
+                {
+                    id: 20,
+                    type: "completion",
+                    question: "Choose the proper ending to complete the sentence: One must know that smoking is ...",
+                    options: ["proper for respiratory system", "required for respiratory system", "dangerous for respiratory system"],
+                    correct: 2
+                }
+            ],
+            
+            // Страница 30-39: Choose the correct translation (перевод)
+            translation: [
+                {
+                    id: 21,
+                    type: "translation",
+                    question: "Choose the correct translation: He was made the diagnosis of bronchitis.",
+                    options: ["Он поставил диагноз бронхита.", "Он ставил диагноз бронхита.", "Ему поставили диагноз бронхита."],
+                    correct: 2
+                },
+                {
+                    id: 22,
+                    type: "translation",
+                    question: "Choose the correct translation: He was pushed away from the electric wire.",
+                    options: ["Его оттолкнули от провода.", "Он оттолкнул электрический провод.", "Он оттолкнулся от электрического провода."],
+                    correct: 0
+                },
+                {
+                    id: 23,
+                    type: "translation",
+                    question: "Choose the correct translation: She was being set the fracture.",
+                    options: ["Ей вправляли перелом.", "Она вправила перелом.", "Ей вправили перелом."],
+                    correct: 0
+                },
+                {
+                    id: 24,
+                    type: "translation",
+                    question: "Choose the correct translation: The boy has seen somebody there.",
+                    options: ["Мальчик там кого-то видит.", "Кто-то, кажется, мальчик, виден там.", "Мальчик там кого-то увидел."],
+                    correct: 2
+                },
+                {
+                    id: 25,
+                    type: "translation",
+                    question: "Choose the correct translation: The child has been taken hot tea.",
+                    options: ["У ребенка забрали горячий чай.", "Ребенок отдал горячий чай.", "Ребенок взял горячий чай."],
+                    correct: 0
+                }
+            ],
+            
+            // Страница 50-59: Find an English equivalent (поиск эквивалента)
+            equivalents: [
+                {
+                    id: 26,
+                    type: "equivalent",
+                    question: "Find an English equivalent to the following word: анамнез",
+                    options: ["patient's medical record", "past medical history", "vital medical care"],
+                    correct: 1
+                },
+                {
+                    id: 27,
+                    type: "equivalent",
+                    question: "Find an English equivalent to the following word: выздоровление",
+                    options: ["remission", "response", "recovery"],
+                    correct: 2
+                },
+                {
+                    id: 28,
+                    type: "equivalent",
+                    question: "Find an English equivalent to the following word: выписать лекарство от",
+                    options: ["prescribe drug for", "over-the-counter drug", "prescribed drug"],
+                    correct: 0
+                },
+                {
+                    id: 29,
+                    type: "equivalent",
+                    question: "Find an English equivalent to the following word: жаловаться",
+                    options: ["complicate", "complain", "complaint"],
+                    correct: 1
+                },
+                {
+                    id: 30,
+                    type: "equivalent",
+                    question: "Find an English equivalent to the following word: одноразовый шприц",
+                    options: ["dosing syringe", "bladder syringe", "disposable syringe"],
+                    correct: 2
+                }
+            ],
+            
+            // Страница 60-69: Read the passage and answer (чтение и ответ)
+            reading: [
+                {
+                    id: 31,
+                    type: "reading",
+                    question: "Patient Beans complained of a bad pain in the left side of the chest. She breathed with difficulty and became pale. Her chest pain was increasing. What hospital medical service should she apply to?",
+                    options: ["the neurology department", "the outpatient care service", "the emergency medical service"],
+                    correct: 2
+                },
+                {
+                    id: 32,
+                    type: "reading",
+                    question: "Patient Brook looked ill and was pale. She had no high temperature but her appetite was poor. What doctor should examine her first?",
+                    options: ["a physician", "a neurologist", "a surgeon"],
+                    correct: 0
+                },
+                {
+                    id: 33,
+                    type: "reading",
+                    question: "Patient Brown was treated at the hospital. His temperature was taken every morning and he was given the prescribed medicines. Who carried out the administrations?",
+                    options: ["dayshift nurses", "the admitting physician", "the referring physician"],
+                    correct: 0
+                },
+                {
+                    id: 34,
+                    type: "reading",
+                    question: "Patient Green caught a cold and had a very high temperature. He needed a medicine badly, so his wife brought him some remedy from the pharmacy. What kind of drug did she bring him?",
+                    options: ["a hot water bottle", "an over-the-counter medicine", "a prescription medicine"],
+                    correct: 1
+                },
+                {
+                    id: 35,
+                    type: "reading",
+                    question: "Patient Pensy was treated at the hospital. Her temperature was taken every morning and she was given the intramuscular injections of vitamin B6. Who ordered the injections?",
+                    options: ["her inpatient ward doctor", "inpatient wards nurses", "her outpatient clinic doctor"],
+                    correct: 0
+                }
+            ]
+        };
+        
+        // Объединяем все вопросы в один массив
+        let allQuestions = [];
+        for (let category in testData) {
+            allQuestions = allQuestions.concat(testData[category]);
+        }
+        
+        // Перемешиваем вопросы для разнообразия
+        allQuestions = allQuestions.sort(() => Math.random() - 0.5);
+        
+        // Состояние теста
+        let currentPage = 1;
+        const questionsPerPage = 5;
+        const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
+        let userAnswers = new Array(allQuestions.length).fill(null);
+        let testSubmitted = false;
+        
+        // Инициализация теста
+        function initTest() {
+            document.getElementById('total-questions').textContent = allQuestions.length;
+            document.getElementById('total-pages').textContent = totalPages;
+            renderPage(currentPage);
+        }
+        
+        // Отображение страницы с вопросами
+        function renderPage(pageNum) {
+            const startIndex = (pageNum - 1) * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, allQuestions.length);
+            const pageQuestions = allQuestions.slice(startIndex, endIndex);
+            
+            const testContent = document.getElementById('test-content');
+            testContent.innerHTML = '';
+            
+            pageQuestions.forEach((question, index) => {
+                const globalIndex = startIndex + index;
+                const questionHTML = createQuestionHTML(question, globalIndex);
+                testContent.innerHTML += questionHTML;
+            });
+            
+            document.getElementById('current-page').textContent = pageNum;
+            
+            // Обновляем состояние кнопок навигации
+            document.getElementById('prev-btn').disabled = pageNum === 1;
+            document.getElementById('next-btn').disabled = pageNum === totalPages;
+            
+            // Обновляем выбранные ответы
+            updateSelectedAnswers();
+        }
+        
+        // Создание HTML для вопроса
+        function createQuestionHTML(question, index) {
+            let optionsHTML = '';
+            let typeLabel = '';
+            
+            // Определяем метку типа вопроса
+            switch(question.type) {
+                case 'definition': typeLabel = 'Определение'; break;
+                case 'antonym': typeLabel = 'Антоним'; break;
+                case 'synonym': typeLabel = 'Синоним'; break;
+                case 'completion': typeLabel = 'Завершение предложения'; break;
+                case 'translation': typeLabel = 'Перевод'; break;
+                case 'equivalent': typeLabel = 'Эквивалент'; break;
+                case 'reading': typeLabel = 'Понимание текста'; break;
+                default: typeLabel = 'Вопрос';
+            }
+            
+            // Создаем HTML для вариантов ответов
+            question.options.forEach((option, optionIndex) => {
+                let optionClass = 'option';
+                if (userAnswers[index] === optionIndex) {
+                    optionClass += ' selected';
+                }
+                if (testSubmitted) {
+                    if (optionIndex === question.correct) {
+                        optionClass += ' correct';
+                    } else if (userAnswers[index] === optionIndex && userAnswers[index] !== question.correct) {
+                        optionClass += ' incorrect';
+                    }
+                }
+                
+                optionsHTML += `
+                    <div class="${optionClass}" onclick="selectAnswer(${index}, ${optionIndex})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            return `
+                <div class="question-block">
+                    <div class="question-type">${typeLabel}</div>
+                    <div class="question-title">${question.id}. ${question.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                    ${testSubmitted && userAnswers[index] !== null && userAnswers[index] !== question.correct ? 
+                        `<div class="answer-feedback correct-answer">
+                            Правильный ответ: ${question.options[question.correct]}
+                        </div>` : ''
+                    }
+                </div>
+            `;
+        }
+        
+        // Выбор ответа
+        function selectAnswer(questionIndex, optionIndex) {
+            if (testSubmitted) return;
+            
+            userAnswers[questionIndex] = optionIndex;
+            updateSelectedAnswers();
+        }
+        
+        // Обновление выбранных ответов
+        function updateSelectedAnswers() {
+            const startIndex = (currentPage - 1) * questionsPerPage;
+            const endIndex = Math.min(startIndex + questionsPerPage, allQuestions.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const question = allQuestions[i];
+                const options = document.querySelectorAll(`#test-content .question-block:nth-child(${i - startIndex + 1}) .option`);
+                
+                options.forEach((option, optionIndex) => {
+                    option.classList.remove('selected');
+                    if (userAnswers[i] === optionIndex) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+        }
+        
+        // Смена страницы
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderPage(currentPage);
+            }
+        }
+        
+        // Проверка теста
+        function submitTest() {
+            testSubmitted = true;
+            
+            // Подсчет правильных ответов
+            let correctCount = 0;
+            for (let i = 0; i < allQuestions.length; i++) {
+                if (userAnswers[i] === allQuestions[i].correct) {
+                    correctCount++;
+                }
+            }
+            
+            // Отображение результатов
+            const percentage = Math.round((correctCount / allQuestions.length) * 100);
+            document.getElementById('score-value').textContent = correctCount;
+            document.getElementById('total-questions-score').textContent = allQuestions.length;
+            document.getElementById('percentage').textContent = percentage + '%';
+            
+            // Детальные результаты
+            let detailedResults = '<h3>Результаты по категориям:</h3>';
+            for (let category in testData) {
+                const categoryQuestions = testData[category];
+                let categoryCorrect = 0;
+                
+                for (let i = 0; i < categoryQuestions.length; i++) {
+                    const question = categoryQuestions[i];
+                    const globalIndex = allQuestions.findIndex(q => q.id === question.id);
+                    if (globalIndex !== -1 && userAnswers[globalIndex] === question.correct) {
+                        categoryCorrect++;
+                    }
+                }
+                
+                const categoryPercentage = Math.round((categoryCorrect / categoryQuestions.length) * 100);
+                let categoryName = '';
+                
+                switch(category) {
+                    case 'definitions': categoryName = 'Определения'; break;
+                    case 'antonyms': categoryName = 'Антонимы'; break;
+                    case 'synonyms': categoryName = 'Синонимы'; break;
+                    case 'sentenceCompletion': categoryName = 'Завершение предложений'; break;
+                    case 'translation': categoryName = 'Перевод'; break;
+                    case 'equivalents': categoryName = 'Эквиваленты'; break;
+                    case 'reading': categoryName = 'Понимание текста'; break;
+                    default: categoryName = category;
+                }
+                
+                detailedResults += `
+                    <div style="margin-bottom: 10px;">
+                        <strong>${categoryName}:</strong> ${categoryCorrect} из ${categoryQuestions.length} (${categoryPercentage}%)
+                    </div>
+                `;
+            }
+            
+            document.getElementById('detailed-results').innerHTML = detailedResults;
+            document.getElementById('results').style.display = 'block';
+            
+            // Перерисовываем текущую страницу для отображения правильных/неправильных ответов
+            renderPage(currentPage);
+            
+            // Прокручиваем к результатам
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Сброс теста
+        function resetTest() {
+            userAnswers = new Array(allQuestions.length).fill(null);
+            testSubmitted = false;
+            currentPage = 1;
+            document.getElementById('results').style.display = 'none';
+            initTest();
+        }
+        
+        // Запуск теста при загрузке страницы
+        window.onload = initTest;
+    </script>
+</body>
+</html>
