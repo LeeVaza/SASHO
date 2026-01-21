@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Медицинский тест по английскому языку</title>
+    <title>Медицинский тест по английскому языку - 129 вопросов</title>
     <style>
         * {
             box-sizing: border-box;
@@ -62,8 +62,8 @@
             color: #7f8c8d;
         }
         .question-block {
-            margin-bottom: 20px;
-            padding: 18px;
+            margin-bottom: 25px;
+            padding: 20px;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
             background-color: #f9f9f9;
@@ -71,10 +71,6 @@
         }
         .question-block:hover {
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-        }
-        .question-block.highlight {
-            background-color: #fff9e6;
-            border-color: #ffcc00;
         }
         .question-title {
             font-weight: 600;
@@ -144,6 +140,34 @@
             background-color: #f8d7da;
             border-left: 4px solid #dc3545;
         }
+        .text-passage {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #6c757d;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .match-item {
+            padding: 10px;
+            border: 1px dashed #bdc3c7;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .match-left {
+            text-align: right;
+            font-weight: bold;
+        }
+        .match-right {
+            text-align: left;
+        }
         button {
             background-color: #3498db;
             color: white;
@@ -184,22 +208,6 @@
             color: #2c3e50;
             text-align: center;
             margin-bottom: 20px;
-        }
-        .answer-feedback {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            display: none;
-        }
-        .correct-answer-feedback {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .explanation {
-            font-style: italic;
-            margin-top: 5px;
-            color: #6c757d;
         }
         .stats {
             display: flex;
@@ -251,6 +259,26 @@
             font-style: italic;
             display: none;
         }
+        .page-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .page-nav a {
+            display: block;
+            padding: 5px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .page-nav a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -262,6 +290,16 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            .match-container {
+                grid-template-columns: 1fr;
+            }
+            .filter-buttons {
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            .page-nav {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -270,7 +308,7 @@
         <h1>Медицинский тест по английскому языку</h1>
         
         <div class="test-info">
-            <p>Этот тест содержит 129 вопросов по медицинской терминологии на английском языке. Вопросы включают выбор правильного определения, поиск антонимов и синонимов, сопоставление, выбор правильного окончания предложения, перевод и составление предложений.</p>
+            <p>Этот тест содержит 129 вопросов по медицинской терминологии на английском языке. Вопросы включают выбор правильного определения, поиск антонимов и синонимов, сопоставление, выбор правильного окончания предложения, перевод, составление предложений, понимание текстов и многое другое.</p>
             <p><strong>Правильные ответы отмечены светло-голубым цветом.</strong> Вы можете выбрать свои варианты, а затем проверить результат.</p>
         </div>
         
@@ -284,13 +322,14 @@
             <button class="filter-btn" data-filter="definition">Определения (20)</button>
             <button class="filter-btn" data-filter="antonym">Антонимы (10)</button>
             <button class="filter-btn" data-filter="synonym">Синонимы (10)</button>
+            <button class="filter-btn" data-filter="match">Сопоставление (10)</button>
             <button class="filter-btn" data-filter="completion">Завершение предложений (15)</button>
             <button class="filter-btn" data-filter="translation">Перевод (10)</button>
             <button class="filter-btn" data-filter="equivalent">Эквиваленты (10)</button>
-            <button class="filter-btn" data-filter="reading">Понимание текста (15)</button>
+            <button class="filter-btn" data-filter="reading">Понимание текста (20)</button>
             <button class="filter-btn" data-filter="sentence">Составление предложений (9)</button>
             <button class="filter-btn" data-filter="grammar">Грамматика (20)</button>
-            <button class="filter-btn" data-filter="first-aid">Первая помощь (10)</button>
+            <button class="filter-btn" data-filter="first-aid">Первая помощь (5)</button>
         </div>
         
         <div class="stats">
@@ -331,10 +370,25 @@
         </div>
     </div>
 
+    <div class="page-nav" id="page-nav">
+        <strong>Быстрая навигация:</strong>
+        <a href="#q1">1-20: Определения</a>
+        <a href="#q21">21-30: Антонимы</a>
+        <a href="#q31">31-40: Синонимы</a>
+        <a href="#q41">41-50: Сопоставление</a>
+        <a href="#q51">51-65: Завершение</a>
+        <a href="#q66">66-75: Перевод</a>
+        <a href="#q76">76-85: Эквиваленты</a>
+        <a href="#q86">86-105: Тексты</a>
+        <a href="#q106">106-114: Предложения</a>
+        <a href="#q115">115-134: Грамматика</a>
+        <a href="#q135">135-139: Первая помощь</a>
+    </div>
+
     <script>
-        // Вопросы из файла, сгруппированные по типам
+        // ВСЕ 129 вопросов из документа
         const testData = [
-            // Страницы 1-2: Find the proper definition (20 вопросов)
+            // 1-20: Определения (20 вопросов)
             {
                 id: 1,
                 type: "definition",
@@ -381,28 +435,28 @@
                 id: 7,
                 type: "definition",
                 question: "Find the proper definition: chest",
-                options: ["a bony structure protecting heart and lungs", "a tube for passage of food", "a big gland producing bile"],
+                options: ["a bony structure protecting heart and lungs", "vertebral column", "a big gland producing bile for food digestion"],
                 correct: 0
             },
             {
                 id: 8,
                 type: "definition",
                 question: "Find the proper definition: backbone",
-                options: ["vertebral column", "a bag with bile", "a gland producing bile"],
-                correct: 0
+                options: ["a bony structure protecting heart and lungs", "vertebral column", "a big gland producing bile for food digestion"],
+                correct: 1
             },
             {
                 id: 9,
                 type: "definition",
                 question: "Find the proper definition: liver",
-                options: ["a big gland producing bile for food digestion", "a bony structure of the head", "a joint between the upper arm and the forearm"],
-                correct: 0
+                options: ["a bony structure protecting heart and lungs", "vertebral column", "a big gland producing bile for food digestion"],
+                correct: 2
             },
             {
                 id: 10,
                 type: "definition",
                 question: "Find the proper definition: alimentary canal",
-                options: ["a tube for passage of food from the mouth to the stomach", "a long bone in the middle of the chest", "lower extremity"],
+                options: ["a tube for passage of food from the mouth to the stomach", "a long bone in the middle of the chest", "box of bones in the upper trunk"],
                 correct: 0
             },
             {
@@ -476,7 +530,7 @@
                 correct: 0
             },
             
-            // Страницы 3-4: Give the opposite (антонимы) (10 вопросов)
+            // 21-30: Антонимы (10 вопросов)
             {
                 id: 21,
                 type: "antonym",
@@ -548,7 +602,7 @@
                 correct: 0
             },
             
-            // Страница 5: Give the synonyms (синонимы) (10 вопросов)
+            // 31-40: Синонимы (10 вопросов)
             {
                 id: 31,
                 type: "synonym",
@@ -620,392 +674,416 @@
                 correct: 0
             },
             
-            // Страницы 11-20: Choose the proper ending (15 вопросов)
+            // 41-50: Сопоставление (10 вопросов - по одному на каждую пару)
             {
                 id: 41,
+                type: "match",
+                question: "Match: shoulder - ?",
+                options: ["bones", "joint", "muscle"],
+                correct: 0
+            },
+            {
+                id: 42,
+                type: "match",
+                question: "Match: alimentary - ?",
+                options: ["tract", "system", "canal"],
+                correct: 0
+            },
+            {
+                id: 43,
+                type: "match",
+                question: "Match: hollow - ?",
+                options: ["muscle", "organ", "bone"],
+                correct: 0
+            },
+            {
+                id: 44,
+                type: "match",
+                question: "Match: vertebrate - ?",
+                options: ["animals", "plants", "insects"],
+                correct: 0
+            },
+            {
+                id: 45,
+                type: "match",
+                question: "Match: digestive - ?",
+                options: ["system", "tract", "organ"],
+                correct: 0
+            },
+            {
+                id: 46,
+                type: "match",
+                question: "Match: urine - ?",
+                options: ["bladder", "kidney", "duct"],
+                correct: 0
+            },
+            {
+                id: 47,
+                type: "match",
+                question: "Match: vertebral - ?",
+                options: ["column", "disc", "cord"],
+                correct: 0
+            },
+            {
+                id: 48,
+                type: "match",
+                question: "Match: laryngeal - ?",
+                options: ["tonsils", "folds", "cartilage"],
+                correct: 0
+            },
+            {
+                id: 49,
+                type: "match",
+                question: "Match: bile - ?",
+                options: ["reservoir", "duct", "gland"],
+                correct: 0
+            },
+            {
+                id: 50,
+                type: "match",
+                question: "Match: tricuspid - ?",
+                options: ["valve", "artery", "vein"],
+                correct: 0
+            },
+            
+            // 51-65: Завершение предложений (15 вопросов)
+            {
+                id: 51,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: Abdomen is ...",
                 options: ["located under the diaphragm", "contains heart and lungs", "located above the diaphragm"],
                 correct: 0
             },
             {
-                id: 42,
+                id: 52,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: During respiration the exchange of gases takes place between:",
                 options: ["the living organism and the lungs", "the living organism and the atmosphere", "the living organism and the plants"],
                 correct: 1
             },
             {
-                id: 43,
+                id: 53,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: Each lung is surrounded by ...",
                 options: ["a double-folded membrane", "a thin dome-shaped diaphragm", "a three-walled pleura"],
                 correct: 0
             },
             {
-                id: 44,
+                id: 54,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: Interruption of breathing for only a few minutes may cause:",
                 options: ["death", "muscular efforts", "respiratory diseases"],
                 correct: 0
             },
             {
-                id: 45,
+                id: 55,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: One must know that smoking is ...",
                 options: ["proper for respiratory system", "required for respiratory system", "dangerous for respiratory system"],
                 correct: 2
             },
             {
-                id: 46,
+                id: 56,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: Respiration occurs in ...",
                 options: ["some plants and animals", "animals only", "all living things"],
                 correct: 2
             },
             {
-                id: 47,
+                id: 57,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: The air passes from the windpipe:",
                 options: ["to the bronchi", "to the lungs", "to the pharynx"],
                 correct: 0
             },
             {
-                id: 48,
+                id: 58,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: The gallbladder is:",
                 options: ["a bile reservoir", "a gland of the digestive system", "an organ of the urine system"],
                 correct: 0
             },
             {
-                id: 49,
+                id: 59,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: The largest gland of the digestive tract is:",
                 options: ["the liver", "the stomach", "the pancreas"],
                 correct: 0
             },
             {
-                id: 50,
+                id: 60,
                 type: "completion",
                 question: "Choose the proper ending to complete the sentence: The vital capacity of the lungs is ...",
                 options: ["different in male and female", "not different in adults and children", "the same in male and female"],
                 correct: 0
             },
             {
-                id: 51,
+                id: 61,
                 type: "completion",
                 question: "Complete the following sentence: In the adult the skeleton ... over 200 bones.",
                 options: ["do", "are", "has", "have"],
                 correct: 2
             },
             {
-                id: 52,
+                id: 62,
                 type: "completion",
                 question: "Complete the following sentence: The breastbone is a long bone... of the chest.",
                 options: ["in the middle", "in the back", "in the neck", "on the left"],
                 correct: 0
             },
             {
-                id: 53,
+                id: 63,
                 type: "completion",
                 question: "Complete the following sentence: The chest ... from the abdomen by the diaphragm.",
                 options: ["was separated", "is separated", "separates", "separated"],
                 correct: 1
             },
             {
-                id: 54,
+                id: 64,
                 type: "completion",
                 question: "Complete the following sentence: The chest... by several pairs of ribs, breastbone and spine.",
                 options: ["is formed", "forms", "were formed", "formed"],
                 correct: 0
             },
             {
-                id: 55,
+                id: 65,
                 type: "completion",
                 question: "Complete the following sentence: The eleventh and the twelfth ribs.... the breastbone.",
                 options: ["joins", "joined", "do not join", "is not joined"],
                 correct: 2
             },
             
-            // Страница 21-29: Make sentence (9 вопросов)
+            // 66-75: Перевод (10 вопросов)
             {
-                id: 56,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): the oral cavity, are, the teeth, located in",
-                options: ["The teeth are located in the oral cavity", "The oral cavity are located in the teeth", "Located in the oral cavity are the teeth"],
-                correct: 0
-            },
-            {
-                id: 57,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): the library, take, the students, from, the books",
-                options: ["The students take the books from the library", "The library takes the books from the students", "From the library the students take the books"],
-                correct: 0
-            },
-            {
-                id: 58,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): are, with, the oral cavity, connected, the salivary glands",
-                options: ["The salivary glands are connected with the oral cavity", "The oral cavity are connected with the salivary glands", "Connected with the oral cavity are the salivary glands"],
-                correct: 0
-            },
-            {
-                id: 59,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): human, the, describes, structure, anatomy, body, the, of",
-                options: ["Anatomy describes the structure of the human body", "The human body describes the structure of anatomy", "The structure describes anatomy of the human body"],
-                correct: 0
-            },
-            {
-                id: 60,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): in, are, kidneys, the abdomen, situated",
-                options: ["Kidneys are situated in the abdomen", "The abdomen are situated in kidneys", "Situated in the abdomen are kidneys"],
-                correct: 0
-            },
-            {
-                id: 61,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): bounded, the, above, diaphragm, by, abdomen, is, pelvic, below, bones, the, by, and",
-                options: ["The abdomen is bounded above by the diaphragm and below by pelvic bones", "The diaphragm is bounded above by abdomen and below by pelvic bones", "Pelvic bones are bounded above by the abdomen and below by the diaphragm"],
-                correct: 0
-            },
-            {
-                id: 62,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): shoulder, trunk, by, the, with, the, connected, the, upper, is, extremity",
-                options: ["The upper extremity is connected with the trunk by the shoulder", "The trunk is connected with the shoulder by the upper extremity", "The shoulder is connected with the trunk by the upper extremity"],
-                correct: 0
-            },
-            {
-                id: 63,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): is, vertebrae, by, the, the, formed, spinal, column",
-                options: ["The spinal column is formed by the vertebrae", "The vertebrae is formed by the spinal column", "Formed by the spinal column is the vertebrae"],
-                correct: 0
-            },
-            {
-                id: 64,
-                type: "sentence",
-                question: "Make sentence from the following words (Предложение начинать с большой буквы): many, published, journals, Saint-Petersburg, are, in, medical",
-                options: ["Many medical journals are published in Saint-Petersburg", "Saint-Petersburg are published in many medical journals", "Published in Saint-Petersburg are many medical journals"],
-                correct: 0
-            },
-            
-            // Страница 30-39: Choose the correct translation (10 вопросов)
-            {
-                id: 65,
+                id: 66,
                 type: "translation",
                 question: "Choose the correct translation: He was made the diagnosis of bronchitis.",
                 options: ["Он поставил диагноз бронхита.", "Он ставил диагноз бронхита.", "Ему поставили диагноз бронхита."],
                 correct: 2
             },
             {
-                id: 66,
+                id: 67,
                 type: "translation",
                 question: "Choose the correct translation: He was pushed away from the electric wire.",
                 options: ["Его оттолкнули от провода.", "Он оттолкнул электрический провод.", "Он оттолкнулся от электрического провода."],
                 correct: 0
             },
             {
-                id: 67,
+                id: 68,
                 type: "translation",
                 question: "Choose the correct translation: She was being set the fracture.",
                 options: ["Ей вправляли перелом.", "Она вправила перелом.", "Ей вправили перелом."],
                 correct: 0
             },
             {
-                id: 68,
+                id: 69,
                 type: "translation",
                 question: "Choose the correct translation: The boy has seen somebody there.",
                 options: ["Мальчик там кого-то видит.", "Кто-то, кажется, мальчик, виден там.", "Мальчик там кого-то увидел."],
                 correct: 2
             },
             {
-                id: 69,
+                id: 70,
                 type: "translation",
                 question: "Choose the correct translation: The child has been taken hot tea.",
                 options: ["У ребенка забрали горячий чай.", "Ребенок отдал горячий чай.", "Ребенок взял горячий чай."],
                 correct: 0
             },
             {
-                id: 70,
+                id: 71,
                 type: "translation",
                 question: "Choose the correct translation: The doctor has been given tests results.",
                 options: ["Доктору дали результаты тестов.", "Доктор отдал результаты тестов.", "Доктор имеет результаты сданных тестов."],
                 correct: 0
             },
             {
-                id: 71,
+                id: 72,
                 type: "translation",
                 question: "Choose the correct translation: The girl is often sent SMS messages.",
                 options: ["Девочка часто посылает СМС-сообщения.", "Девочке часто посылают СМС-сообщения.", "У девочки часто бывают отправленные СМС-сообщения."],
                 correct: 1
             },
             {
-                id: 72,
+                id: 73,
                 type: "translation",
                 question: "Choose the correct translation: The nurse was helping to dress the wound.",
                 options: ["Медсестра помогала перевязать рану.", "Медсестра помогла перевязать рану.", "Медсестре помогли перевязать рану."],
                 correct: 0
             },
             {
-                id: 73,
+                id: 74,
                 type: "translation",
                 question: "Choose the correct translation: The patient is sometimes given the medicine.",
                 options: ["Больной иногда принимает это лекарство.", "Пациенту иногда дают это лекарство.", "Больной иногда отдает это лекарство."],
                 correct: 1
             },
             {
-                id: 74,
+                id: 75,
                 type: "translation",
                 question: "Choose the correct translation: The woman is being operated.",
                 options: ["Эта женщина оперирует сейчас.", "Эту женщину оперируют сейчас.", "Эту женщину оперировали."],
                 correct: 1
             },
             
-            // Страница 50-59: Find an English equivalent (10 вопросов)
+            // 76-85: Эквиваленты (10 вопросов)
             {
-                id: 75,
+                id: 76,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: анамнез",
                 options: ["patient's medical record", "past medical history", "vital medical care"],
                 correct: 1
             },
             {
-                id: 76,
+                id: 77,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: выздоровление",
                 options: ["remission", "response", "recovery"],
                 correct: 2
             },
             {
-                id: 77,
+                id: 78,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: выписать лекарство от",
                 options: ["prescribe drug for", "over-the-counter drug", "prescribed drug"],
                 correct: 0
             },
             {
-                id: 78,
+                id: 79,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: жаловаться",
                 options: ["complicate", "complain", "complaint"],
                 correct: 1
             },
             {
-                id: 79,
+                id: 80,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: одноразовый шприц",
                 options: ["dosing syringe", "bladder syringe", "disposable syringe"],
                 correct: 2
             },
             {
-                id: 80,
+                id: 81,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: первоначальный диагноз",
                 options: ["initial diagnosis", "vital diagnosis", "various diagnosis"],
                 correct: 0
             },
             {
-                id: 81,
+                id: 82,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: приёмное отделение",
                 options: ["admission department", "inpatient wards", "accident department"],
                 correct: 0
             },
             {
-                id: 82,
+                id: 83,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: принимающий доктор",
                 options: ["ward doctor", "referring doctor", "admitting doctor"],
                 correct: 2
             },
             {
-                id: 83,
+                id: 84,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: развиваться",
                 options: ["demand", "discharge", "develop"],
                 correct: 2
             },
             {
-                id: 84,
+                id: 85,
                 type: "equivalent",
                 question: "Find an English equivalent to the following word: состояние",
                 options: ["study", "stage", "condition"],
                 correct: 2
             },
             
-            // Страница 60-69: Read the passage and answer (15 вопросов)
+            // 86-105: Понимание текста (20 вопросов)
             {
-                id: 85,
+                id: 86,
                 type: "reading",
-                question: "Patient Beans complained of a bad pain in the left side of the chest. She breathed with difficulty and became pale. Her chest pain was increasing. What hospital medical service should she apply to?",
+                question: "Read the passage and answer the question: Patient Beans complained of a bad pain in the left side of the chest. She breathed with difficulty and became pale. Her chest pain was increasing. What hospital medical service should she apply to?",
                 options: ["the neurology department", "the outpatient care service", "the emergency medical service"],
                 correct: 2
             },
             {
-                id: 86,
-                type: "reading",
-                question: "Patient Brook looked ill and was pale. She had no high temperature but her appetite was poor. What doctor should examine her first?",
-                options: ["a physician", "a neurologist", "a surgeon"],
-                correct: 0
-            },
-            {
                 id: 87,
                 type: "reading",
-                question: "Patient Brown was treated at the hospital. His temperature was taken every morning and he was given the prescribed medicines. Who carried out the administrations?",
-                options: ["dayshift nurses", "the admitting physician", "the referring physician"],
+                question: "Read the passage and answer the question: Patient Brook looked ill and was pale. She had no high temperature but her appetite was poor. What doctor should examine her first?",
+                options: ["a physician", "a neurologist", "a surgeon"],
                 correct: 0
             },
             {
                 id: 88,
                 type: "reading",
-                question: "Patient Green caught a cold and had a very high temperature. He needed a medicine badly, so his wife brought him some remedy from the pharmacy. What kind of drug did she bring him?",
-                options: ["a hot water bottle", "an over-the-counter medicine", "a prescription medicine"],
-                correct: 1
+                question: "Read the passage and answer the question: Patient Brown was treated at the hospital. His temperature was taken every morning and he was given the prescribed medicines. Who carried out the administrations?",
+                options: ["dayshift nurses", "the admitting physician", "the referring physician"],
+                correct: 0
             },
             {
                 id: 89,
                 type: "reading",
-                question: "Patient Pensy was treated at the hospital. Her temperature was taken every morning and she was given the intramuscular injections of vitamin B6. Who ordered the injections?",
-                options: ["her inpatient ward doctor", "inpatient wards nurses", "her outpatient clinic doctor"],
-                correct: 0
+                question: "Read the passage and answer the question: Patient Green caught a cold and had a very high temperature. He needed a medicine badly, so his wife brought him some remedy from the pharmacy. What kind of drug did she bring him?",
+                options: ["a hot water bottle", "an over-the-counter medicine", "a prescription medicine"],
+                correct: 1
             },
             {
                 id: 90,
                 type: "reading",
-                question: "Patient Perry was at the pharmacy and ordered some medicine to be formulated. In an hour he received a small bottle with it. What kind of medicine was it?",
-                options: ["an over-the-counter drug", "some herbs", "a prescription drug"],
-                correct: 2
+                question: "Read the passage and answer the question: Patient Pensy was treated at the hospital. Her temperature was taken every morning and she was given the intramuscular injections of vitamin B6. Who ordered the injections?",
+                options: ["her inpatient ward doctor", "inpatient wards nurses", "her outpatient clinic doctor"],
+                correct: 0
             },
             {
                 id: 91,
                 type: "reading",
-                question: "Patient Smirnova was treated at home as she felt very ill. She needed a document for her work to stay in. What did her local physician give her?",
-                options: ["a sick leave", "a medical record", "a case history"],
+                question: "Read the text. Which of the sentences gives the main idea of the text? During the local physician's consulting hours a nurse usually helps the doctor making appointments for patients' next visits and fills in referral forms for tests administered by the doctor. In a hospital's admission department nurses meet the admitted patients first and note all the necessary general information about the patient into his/her medical record.",
+                passage: "During the local physician's consulting hours a nurse usually helps the doctor making appointments for patients' next visits and fills in referral forms for tests administered by the doctor. In a hospital's admission department nurses meet the admitted patients first and note all the necessary general information about the patient into his/her medical record.",
+                options: [
+                    "Nurses help doctors to fill in various medical documentation with general information.",
+                    "Nurses help local physicians during their consulting hours.",
+                    "In hospitals nurses take notes of patients' passport data.",
+                    "Nurses always assist doctors in hospitals."
+                ],
                 correct: 0
             },
             {
                 id: 92,
                 type: "reading",
-                question: "Patient Smith went to the nearest chemist's and bought a small box of medicine for oral use: What was in the box?",
-                options: ["some ointment", "some pills", "some ampoules"],
-                correct: 1
+                question: "Read the text. Which of the sentences gives the main idea of the text? Every pack of medicine has a label with the medicine's name and instructions to its use. It is very necessary because a wrong drug, an improper dose of a drug may cause poisoning or even death in the person. Doctors advise to read the medicine's label carefully each time before taking a drug. One should always follow the instructions to its use, paying attention to the drug's side effects.",
+                passage: "Every pack of medicine has a label with the medicine's name and instructions to its use. It is very necessary because a wrong drug, an improper dose of a drug may cause poisoning or even death in the person. Doctors advise to read the medicine's label carefully each time before taking a drug. One should always follow the instructions to its use, paying attention to the drug's side effects.",
+                options: [
+                    "Labels are very necessary for all drugs because their wrong use may be dangerous.",
+                    "It is not important to read the label attentively.",
+                    "Poisoning with drugs is usual.",
+                    "The name of the medicine is always written on its label."
+                ],
+                correct: 0
             },
             {
                 id: 93,
                 type: "reading",
-                question: "Patient Snapp was playing in the garden and fell down. She impaired her right upper extremity. There was a deep wound on the lateral surface. What specialist should examine her?",
-                options: ["a surgeon", "a physician", "a cardiologist"],
-                correct: 0
+                question: "Read the text. Which of the sentences gives the main idea of the text? It is not hard to keep the baby safe during the first year of his life, when he is in a crib, or held by his mother. But when the child starts getting around he needs constant supervision. He must explore the world for himself, but he has no sense of danger.",
+                passage: "It is not hard to keep the baby safe during the first year of his life, when he is in a crib, or held by his mother. But when the child starts getting around he needs constant supervision. He must explore the world for himself, but he has no sense of danger.",
+                options: [
+                    "The child must explore the world.",
+                    "Parents should constantly look after the child at the exploring age.",
+                    "A child does not use his eyes alone learning about the world.",
+                    "A baby is safe in its crib."
+                ],
+                correct: 1
             },
             {
                 id: 94,
                 type: "reading",
-                question: "Patient Stone went from his doctor to the drugstore to get the necessary medicine. There he was given a tube of ointment. How is he going to use the medicine?",
-                options: ["to take it in", "in injections", "externally"],
-                correct: 2
+                question: "Read the text. Which of the sentences gives the main idea of the text? Nurses give injections or IV infusions to patients. They help surgeons to dress wounds or change dressing after a surgery, they can also perform some other wound care. A nurse can carry out practically any medical procedure ordered by the doctor both in a hospital, an outpatient clinic, or at a patient's home.",
+                passage: "Nurses give injections or IV infusions to patients. They help surgeons to dress wounds or change dressing after a surgery, they can also perform some other wound care. A nurse can carry out practically any medical procedure ordered by the doctor both in a hospital, an outpatient clinic, or at a patient's home.",
+                options: [
+                    "Sometimes a nurse visits patients at home if it is prescribed by the doctor.",
+                    "Nurses can perform lots of medical procedures.",
+                    "Nurses can assist surgeons with the wound care.",
+                    "Nurses can give all kinds of injections."
+                ],
+                correct: 1
             },
             {
                 id: 95,
@@ -1042,226 +1120,336 @@
                 options: ["make a correct diagnosis", "keep the patient busy", "teach medical staff"],
                 correct: 0
             },
-            
-            // Грамматические вопросы (20 вопросов)
             {
                 id: 100,
+                type: "reading",
+                question: "Choose the correct ending only: Medical record includes information on:",
+                options: ["changes in the patient's condition", "instructions for a drug use", "the ward's conditions"],
+                correct: 0
+            },
+            {
+                id: 101,
+                type: "reading",
+                question: "Choose the correct ending only: Nurses take patients:",
+                options: ["drugs", "vital signs", "injections"],
+                correct: 1
+            },
+            {
+                id: 102,
+                type: "reading",
+                question: "Choose the correct ending only: The past history contains:",
+                options: ["the results of all the laboratory tests", "the information about the patient's diseases, operations and traumas", "the results of physical examination"],
+                correct: 1
+            },
+            {
+                id: 103,
+                type: "reading",
+                question: "Choose the correct ending only: When a patient is admitted to a hospital he/she is first taken to:",
+                options: ["an investigation", "a ward", "the triage area"],
+                correct: 2
+            },
+            {
+                id: 104,
+                type: "reading",
+                question: "Choose the correct ending only: When the time comes the doctor fixes the date of:",
+                options: ["drugs to be used", "disease progress", "the patient's discharge"],
+                correct: 2
+            },
+            {
+                id: 105,
+                type: "reading",
+                question: "Patient Perry was at the pharmacy and ordered some medicine to be formulated. In an hour he received a small bottle with it. What kind of medicine was it?",
+                options: ["an over-the-counter drug", "some herbs", "a prescription drug"],
+                correct: 2
+            },
+            
+            // 106-114: Составление предложений (9 вопросов)
+            {
+                id: 106,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): the oral cavity, are, the teeth, located in",
+                options: ["The teeth are located in the oral cavity", "The oral cavity are located in the teeth", "Located in the oral cavity are the teeth"],
+                correct: 0
+            },
+            {
+                id: 107,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): the library, take, the students, from, the books",
+                options: ["The students take the books from the library", "The library takes the books from the students", "From the library the students take the books"],
+                correct: 0
+            },
+            {
+                id: 108,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): are, with, the oral cavity, connected, the salivary glands",
+                options: ["The salivary glands are connected with the oral cavity", "The oral cavity are connected with the salivary glands", "Connected with the oral cavity are the salivary glands"],
+                correct: 0
+            },
+            {
+                id: 109,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): human, the, describes, structure, anatomy, body, the, of",
+                options: ["Anatomy describes the structure of the human body", "The human body describes the structure of anatomy", "The structure describes anatomy of the human body"],
+                correct: 0
+            },
+            {
+                id: 110,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): in, are, kidneys, the abdomen, situated",
+                options: ["Kidneys are situated in the abdomen", "The abdomen are situated in kidneys", "Situated in the abdomen are kidneys"],
+                correct: 0
+            },
+            {
+                id: 111,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): bounded, the, above, diaphragm, by, abdomen, is, pelvic, below, bones, the, by, and",
+                options: ["The abdomen is bounded above by the diaphragm and below by pelvic bones", "The diaphragm is bounded above by abdomen and below by pelvic bones", "Pelvic bones are bounded above by the abdomen and below by the diaphragm"],
+                correct: 0
+            },
+            {
+                id: 112,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): shoulder, trunk, by, the, with, the, connected, the, upper, is, extremity",
+                options: ["The upper extremity is connected with the trunk by the shoulder", "The trunk is connected with the shoulder by the upper extremity", "The shoulder is connected with the trunk by the upper extremity"],
+                correct: 0
+            },
+            {
+                id: 113,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): is, vertebrae, by, the, the, formed, spinal, column",
+                options: ["The spinal column is formed by the vertebrae", "The vertebrae is formed by the spinal column", "Formed by the spinal column is the vertebrae"],
+                correct: 0
+            },
+            {
+                id: 114,
+                type: "sentence",
+                question: "Make sentence from the following words (Предложение начинать с большой буквы): many, published, journals, Saint-Petersburg, are, in, medical",
+                options: ["Many medical journals are published in Saint-Petersburg", "Saint-Petersburg are published in many medical journals", "Published in Saint-Petersburg are many medical journals"],
+                correct: 0
+            },
+            
+            // 115-134: Грамматика (20 вопросов)
+            {
+                id: 115,
                 type: "grammar",
                 question: "Complete the following sentence: The function of the stomach is to .... food and serve as its container.",
                 options: ["be digested", "digestion", "digested", "digest"],
                 correct: 3
             },
             {
-                id: 101,
+                id: 116,
                 type: "grammar",
                 question: "Complete the following sentence: The lower extremity is connected with the trunk by the...",
                 options: ["back", "pelvis", "ligament", "shoulder"],
                 correct: 1
             },
             {
-                id: 102,
+                id: 117,
                 type: "grammar",
                 question: "Complete the following sentence: The lower extremity... of thigh, lower leg and foot.",
                 options: ["compose", "form", "consists", "are composed"],
                 correct: 2
             },
             {
-                id: 103,
+                id: 118,
                 type: "grammar",
                 question: "Complete the following sentence: The shoulder blade and the ... make up the shoulder.",
                 options: ["arm", "collar bone", "breastbone", "upper arm"],
                 correct: 1
             },
             {
-                id: 104,
+                id: 119,
                 type: "grammar",
                 question: "Complete the following sentence: The spine ... of the cervical, thoracic, lumbar and sacral vertebrae and the coccyx.",
                 options: ["take part", "connect", "consists", "compose"],
                 correct: 2
             },
             {
-                id: 105,
+                id: 120,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: All traditional tests performed in the laboratory can (divide) into two main groups.",
                 options: ["divide", "be divided", "divided", "dividing"],
                 correct: 1
             },
             {
-                id: 106,
+                id: 121,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: If a medicine (formulate) in the pharmacy, it will have a white label to indicate it.",
                 options: ["formulate", "formulates", "is formulated", "formulated"],
                 correct: 2
             },
             {
-                id: 107,
+                id: 122,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: In Britain primary care (provide) by general practitioners, often called GPs.",
                 options: ["provide", "provides", "is provided", "provided"],
                 correct: 2
             },
             {
-                id: 108,
+                id: 123,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: Medicine (make) in various forms convenient to use.",
                 options: ["make", "makes", "is made", "made"],
                 correct: 2
             },
             {
-                id: 109,
+                id: 124,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: The pharmacist (work) with patients and physicians to provide medication to the patient.",
                 options: ["work", "works", "worked", "working"],
                 correct: 1
             },
             {
-                id: 110,
+                id: 125,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: The pharmacist also (counsel) the patient about medication, side effects and how to use the medication correctly.",
                 options: ["counsel", "counsels", "counseled", "counseling"],
                 correct: 1
             },
             {
-                id: 111,
+                id: 126,
                 type: "grammar",
                 question: "Fill in the proper form of the verb: This pharmacy (sell) both over-the-counter and prescription drugs.",
                 options: ["sell", "sells", "sold", "selling"],
                 correct: 1
             },
             {
-                id: 112,
-                type: "grammar",
-                question: "Fill in the proper form of the verb: When he (finish) his consulting hours he will go out to calls.",
-                options: ["finish", "finishes", "finished", "finishing"],
-                correct: 1
-            },
-            {
-                id: 113,
-                type: "grammar",
-                question: "Fill in the proper form of the verb: While he was making his speech yesterday everybody (to be) listening to him with great attention.",
-                options: ["is", "are", "was", "were"],
-                correct: 3
-            },
-            {
-                id: 114,
-                type: "grammar",
-                question: "Fill in the proper form of the verb: While the patient (examine) the physician took his blood pressure.",
-                options: ["examine", "examines", "was being examined", "examined"],
-                correct: 2
-            },
-            {
-                id: 115,
+                id: 127,
                 type: "grammar",
                 question: "Choose the correct verb form to complete the sentence: I gave her a medicine ______ the temperature down.",
                 options: ["brought", "bringing"],
                 correct: 1
             },
             {
-                id: 116,
+                id: 128,
                 type: "grammar",
                 question: "Choose the correct verb form to complete the sentence: She applied a dressing ______ the bleeding.",
                 options: ["stopped", "stopping"],
                 correct: 1
             },
             {
-                id: 117,
+                id: 129,
                 type: "grammar",
                 question: "Choose the correct verb form to complete the sentence: The arm ______ should be immobilized.",
                 options: ["Broken", "Breaking"],
                 correct: 0
             },
             {
-                id: 118,
+                id: 130,
                 type: "grammar",
                 question: "Choose the correct verb form to complete the sentence: The child ______ the world is in danger of an accident.",
                 options: ["explored", "exploring"],
                 correct: 1
             },
             {
-                id: 119,
+                id: 131,
                 type: "grammar",
                 question: "Choose the correct verb form to complete the sentence: The doctor ______ to the patient's call came quickly.",
                 options: ["sending", "sent"],
                 correct: 1
             },
+            {
+                id: 132,
+                type: "grammar",
+                question: "Choose the correct verb form to complete the sentence: The fracture ______ by a fall was not very dangerous.",
+                options: ["Causing", "Caused"],
+                correct: 1
+            },
+            {
+                id: 133,
+                type: "grammar",
+                question: "Choose the correct verb form to complete the sentence: The stick ______ the contact with electric current should be wooden.",
+                options: ["broken", "breaking"],
+                correct: 1
+            },
+            {
+                id: 134,
+                type: "grammar",
+                question: "Choose the correct verb form to complete the sentence: The vessels ______ blood to the lungs form the pulmonary circulation.",
+                options: ["carried", "carrying"],
+                correct: 1
+            },
             
-            // Первая помощь (10 вопросов)
+            // 135-139: Первая помощь (5 вопросов с множественным выбором)
             {
-                id: 120,
+                id: 135,
                 type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: Rabies is transmitted through animal bites or licks.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
+                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)",
+                options: [
+                    "Rabies is transmitted through animal bites or licks.",
+                    "It's hard to keep a baby under one year of age safe.",
+                    "Ordinary things become dangerous when the child reaches the age of two.",
+                    "If the dog appears healthy for 4 days after the bite the anti-rabic treatment can be stopped.",
+                    "Never let a child touch a hot teapot."
+                ],
+                correctAnswers: [0, 2, 3],
+                multiple: true
             },
             {
-                id: 121,
+                id: 136,
                 type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: Ordinary things become dangerous when the child reaches the age of two.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
+                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)",
+                options: [
+                    "In case of fracture there may not be a deformity.",
+                    "You can break the child's contact with the electric current with your hands.",
+                    "The injured part should be prevented from moving.",
+                    "When a child develops sun stroke he sweats profusely.",
+                    "If the child has stopped breathing you should begin cardiac massage."
+                ],
+                correctAnswers: [0, 2],
+                multiple: true
             },
             {
-                id: 122,
+                id: 137,
                 type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: If the dog appears healthy for 4 days after the bite the anti-rabic treatment can be stopped.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
+                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)",
+                options: [
+                    "Food poisoning can make you feel a bit unwell or seriously ill, it can also cause death.",
+                    "Never leave a child near a heater.",
+                    "More children die from accidents than from other causes.",
+                    "Drugs should be locked up out of the child's reach.",
+                    "Infectious diseases kill more children than poisons."
+                ],
+                correctAnswers: [0, 1, 2, 3],
+                multiple: true
             },
             {
-                id: 123,
+                id: 138,
                 type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: In case of fracture there may not be a deformity.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
+                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)",
+                options: [
+                    "An X-ray is necessary to confirm the fracture.",
+                    "You may give the child water to drink before the anesthesia.",
+                    "The child's contact with the exposed electric wire should be broken.",
+                    "It is not necessary to add salt to the child's drink in case of sun stroke.",
+                    "As a result of electric shock the child may stop breathing."
+                ],
+                correctAnswers: [0, 2, 4],
+                multiple: true
             },
             {
-                id: 124,
+                id: 139,
                 type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: The injured part should be prevented from moving.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
-            },
-            {
-                id: 125,
-                type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: Food poisoning can make you feel a bit unwell or seriously ill, it can also cause death.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
-            },
-            {
-                id: 126,
-                type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: Never leave a child near a heater.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
-            },
-            {
-                id: 127,
-                type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: More children die from accidents than from other causes.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
-            },
-            {
-                id: 128,
-                type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: An X-ray is necessary to confirm the fracture.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
-            },
-            {
-                id: 129,
-                type: "first-aid",
-                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: The child's contact with the exposed electric wire should be broken.",
-                options: ["Correct", "Incorrect"],
-                correct: 0
+                question: "Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)",
+                options: [
+                    "To bring the temperature down the child should be wrapped in a wet sheet.",
+                    "A compound fracture is less serious than a simple fracture.",
+                    "A sudden rise of the body temperature may result in a heat stroke.",
+                    "The injured part should be immobilized.",
+                    "You may use only a ready-made splint to immobilize a fracture."
+                ],
+                correctAnswers: [0, 2, 3],
+                multiple: true
             }
         ];
+        
+        // Проверяем, что у нас действительно 129 вопросов
+        console.log("Всего вопросов в тесте:", testData.length);
         
         // Состояние теста
         let userAnswers = new Array(testData.length).fill(null);
         let testSubmitted = false;
-        let showCorrectAnswers = true; // Показывать правильные ответы сразу
+        let showCorrectAnswers = true;
         
         // Инициализация теста
         function initTest() {
@@ -1288,12 +1476,14 @@
         function createQuestionHTML(question, index) {
             let optionsHTML = '';
             let typeLabel = '';
+            let specialHTML = '';
             
             // Определяем метку типа вопроса
             switch(question.type) {
                 case 'definition': typeLabel = 'Определение'; break;
                 case 'antonym': typeLabel = 'Антоним'; break;
                 case 'synonym': typeLabel = 'Синоним'; break;
+                case 'match': typeLabel = 'Сопоставление'; break;
                 case 'completion': typeLabel = 'Завершение предложения'; break;
                 case 'translation': typeLabel = 'Перевод'; break;
                 case 'equivalent': typeLabel = 'Эквивалент'; break;
@@ -1304,47 +1494,72 @@
                 default: typeLabel = 'Вопрос';
             }
             
-            // Создаем HTML для вариантов ответов
-            question.options.forEach((option, optionIndex) => {
-                let optionClass = 'option';
-                
-                // Показываем правильный ответ светло-голубым
-                if (showCorrectAnswers && optionIndex === question.correct) {
-                    optionClass += ' correct-answer';
-                }
-                
-                if (userAnswers[index] === optionIndex) {
-                    optionClass += ' selected';
-                }
-                
-                if (testSubmitted) {
-                    if (optionIndex === question.correct) {
-                        optionClass += ' correct';
-                    } else if (userAnswers[index] === optionIndex && userAnswers[index] !== question.correct) {
-                        optionClass += ' incorrect';
+            // Для вопросов с текстом
+            if (question.type === 'reading' && question.passage) {
+                specialHTML = `<div class="text-passage">${question.passage}</div>`;
+            }
+            
+            // Для вопросов с множественным выбором
+            if (question.multiple) {
+                question.options.forEach((option, optionIndex) => {
+                    let optionClass = 'option';
+                    
+                    // Показываем правильные ответы
+                    if (showCorrectAnswers && question.correctAnswers && question.correctAnswers.includes(optionIndex)) {
+                        optionClass += ' correct-answer';
                     }
-                }
-                
-                optionsHTML += `
-                    <div class="${optionClass}" onclick="selectAnswer(${index}, ${optionIndex})">
-                        ${option}
-                    </div>
-                `;
-            });
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" onclick="toggleMultipleAnswer(${index}, ${optionIndex})">
+                            <input type="checkbox" id="q${index}_${optionIndex}" style="margin-right: 10px;" ${userAnswers[index] && userAnswers[index].includes(optionIndex) ? 'checked' : ''}>
+                            ${option}
+                        </div>
+                    `;
+                });
+            } else {
+                // Для обычных вопросов с одним правильным ответом
+                question.options.forEach((option, optionIndex) => {
+                    let optionClass = 'option';
+                    
+                    // Показываем правильный ответ светло-голубым
+                    if (showCorrectAnswers && optionIndex === question.correct) {
+                        optionClass += ' correct-answer';
+                    }
+                    
+                    if (userAnswers[index] === optionIndex) {
+                        optionClass += ' selected';
+                    }
+                    
+                    if (testSubmitted) {
+                        if (optionIndex === question.correct) {
+                            optionClass += ' correct';
+                        } else if (userAnswers[index] === optionIndex && userAnswers[index] !== question.correct) {
+                            optionClass += ' incorrect';
+                        }
+                    }
+                    
+                    optionsHTML += `
+                        <div class="${optionClass}" onclick="selectAnswer(${index}, ${optionIndex})">
+                            ${option}
+                        </div>
+                    `;
+                });
+            }
             
             return `
-                <div class="question-block" data-type="${question.type}" data-id="${question.id}">
+                <div class="question-block" id="q${question.id}" data-type="${question.type}" data-id="${question.id}">
                     <div class="question-type">${typeLabel}</div>
                     <div class="question-title">
                         <span class="question-number">${question.id}</span>
                         ${question.question}
                     </div>
+                    ${specialHTML}
                     <div class="options">${optionsHTML}</div>
                 </div>
             `;
         }
         
-        // Выбор ответа
+        // Выбор ответа (один вариант)
         function selectAnswer(questionIndex, optionIndex) {
             if (testSubmitted) return;
             
@@ -1353,11 +1568,32 @@
             updateStats();
         }
         
+        // Переключение ответа (множественный выбор)
+        function toggleMultipleAnswer(questionIndex, optionIndex) {
+            if (testSubmitted) return;
+            
+            if (!userAnswers[questionIndex]) {
+                userAnswers[questionIndex] = [];
+            }
+            
+            const checkbox = document.getElementById(`q${questionIndex}_${optionIndex}`);
+            if (checkbox.checked) {
+                if (!userAnswers[questionIndex].includes(optionIndex)) {
+                    userAnswers[questionIndex].push(optionIndex);
+                }
+            } else {
+                userAnswers[questionIndex] = userAnswers[questionIndex].filter(idx => idx !== optionIndex);
+            }
+            
+            updateStats();
+        }
+        
         // Обновление выбранного ответа
         function updateSelectedAnswer(questionIndex) {
             const questionBlock = document.querySelector(`.question-block[data-id="${testData[questionIndex].id}"]`);
-            const options = questionBlock.querySelectorAll('.option');
+            if (!questionBlock) return;
             
+            const options = questionBlock.querySelectorAll('.option');
             options.forEach((option, optionIndex) => {
                 option.classList.remove('selected');
                 if (userAnswers[questionIndex] === optionIndex) {
@@ -1379,32 +1615,17 @@
                     if (questionText.includes(searchTerm)) {
                         block.style.display = 'block';
                         visibleCount++;
-                        
-                        // Подсветка найденного текста
-                        if (searchTerm.length > 2) {
-                            const title = block.querySelector('.question-title');
-                            const originalText = title.innerHTML;
-                            const highlightedText = originalText.replace(
-                                new RegExp(searchTerm, 'gi'),
-                                match => `<span style="background-color: #ffeb3b;">${match}</span>`
-                            );
-                            title.innerHTML = highlightedText;
-                        }
                     } else {
                         block.style.display = 'none';
                     }
                 });
                 
-                // Показываем сообщение, если ничего не найдено
                 const noResults = document.getElementById('no-results');
                 if (visibleCount === 0 && searchTerm.length > 0) {
                     noResults.style.display = 'block';
                 } else {
                     noResults.style.display = 'none';
                 }
-                
-                // Обновляем статистику видимых вопросов
-                updateVisibleStats(visibleCount);
             });
         }
         
@@ -1413,9 +1634,7 @@
             const filterButtons = document.querySelectorAll('.filter-btn');
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Убираем активный класс у всех кнопок
                     filterButtons.forEach(btn => btn.classList.remove('active'));
-                    // Добавляем активный класс текущей кнопке
                     this.classList.add('active');
                     
                     const filterType = this.getAttribute('data-filter');
@@ -1438,41 +1657,15 @@
                 }
             });
             
-            // Показываем сообщение, если ничего не найдено
             const noResults = document.getElementById('no-results');
             if (visibleCount === 0) {
                 noResults.style.display = 'block';
             } else {
                 noResults.style.display = 'none';
             }
-            
-            updateVisibleStats(visibleCount);
         }
         
-        // Обновление статистики видимых вопросов
-        function updateVisibleStats(visibleCount) {
-            const visibleQuestions = document.querySelectorAll('.question-block[style="display: block"]');
-            let answered = 0;
-            let correct = 0;
-            
-            visibleQuestions.forEach(block => {
-                const questionId = parseInt(block.getAttribute('data-id')) - 1;
-                if (userAnswers[questionId] !== null) {
-                    answered++;
-                    if (userAnswers[questionId] === testData[questionId].correct) {
-                        correct++;
-                    }
-                }
-            });
-            
-            const progress = visibleCount > 0 ? Math.round((answered / visibleCount) * 100) : 0;
-            
-            document.getElementById('answered-questions').textContent = answered;
-            document.getElementById('correct-answers').textContent = correct;
-            document.getElementById('progress-percentage').textContent = progress + '%';
-        }
-        
-        // Обновление общей статистики
+        // Обновление статистики
         function updateStats() {
             let answered = 0;
             let correct = 0;
@@ -1480,8 +1673,20 @@
             userAnswers.forEach((answer, index) => {
                 if (answer !== null) {
                     answered++;
-                    if (answer === testData[index].correct) {
-                        correct++;
+                    const question = testData[index];
+                    
+                    if (question.multiple) {
+                        if (Array.isArray(answer)) {
+                            const userSelected = [...answer].sort();
+                            const correctSelected = [...question.correctAnswers].sort();
+                            if (JSON.stringify(userSelected) === JSON.stringify(correctSelected)) {
+                                correct++;
+                            }
+                        }
+                    } else {
+                        if (answer === question.correct) {
+                            correct++;
+                        }
                     }
                 }
             });
@@ -1497,26 +1702,36 @@
         function submitTest() {
             testSubmitted = true;
             
-            // Подсчет правильных ответов
             let correctCount = 0;
             for (let i = 0; i < testData.length; i++) {
-                if (userAnswers[i] === testData[i].correct) {
-                    correctCount++;
+                const question = testData[i];
+                
+                if (question.multiple) {
+                    if (userAnswers[i] && Array.isArray(userAnswers[i])) {
+                        const userSelected = [...userAnswers[i]].sort();
+                        const correctSelected = [...question.correctAnswers].sort();
+                        if (JSON.stringify(userSelected) === JSON.stringify(correctSelected)) {
+                            correctCount++;
+                        }
+                    }
+                } else {
+                    if (userAnswers[i] === question.correct) {
+                        correctCount++;
+                    }
                 }
             }
             
-            // Отображение результатов
             const percentage = Math.round((correctCount / testData.length) * 100);
             document.getElementById('score-value').textContent = correctCount;
-            document.getElementById('total-questions-score').textContent = testData.length;
             document.getElementById('percentage').textContent = percentage + '%';
             
-            // Детальные результаты по категориям
+            // Детальные результаты
             let detailedResults = '<h3>Результаты по категориям:</h3>';
             const categories = {
                 'definition': 'Определения',
                 'antonym': 'Антонимы',
                 'synonym': 'Синонимы',
+                'match': 'Сопоставление',
                 'completion': 'Завершение предложений',
                 'translation': 'Перевод',
                 'equivalent': 'Эквиваленты',
@@ -1532,15 +1747,27 @@
                 
                 for (let i = 0; i < categoryQuestions.length; i++) {
                     const question = categoryQuestions[i];
-                    if (userAnswers[question.id - 1] === question.correct) {
-                        categoryCorrect++;
+                    const answer = userAnswers[question.id - 1];
+                    
+                    if (question.multiple) {
+                        if (answer && Array.isArray(answer)) {
+                            const userSelected = [...answer].sort();
+                            const correctSelected = [...question.correctAnswers].sort();
+                            if (JSON.stringify(userSelected) === JSON.stringify(correctSelected)) {
+                                categoryCorrect++;
+                            }
+                        }
+                    } else {
+                        if (answer === question.correct) {
+                            categoryCorrect++;
+                        }
                     }
                 }
                 
                 const categoryPercentage = Math.round((categoryCorrect / categoryQuestions.length) * 100);
                 
                 detailedResults += `
-                    <div style="margin-bottom: 10px; padding: 8px; background-color: ${categoryPercentage >= 70 ? '#d4edda' : categoryPercentage >= 50 ? '#fff3cd' : '#f8d7da'}; border-radius: 5px;">
+                    <div style="margin-bottom: 8px; padding: 8px; background-color: ${categoryPercentage >= 70 ? '#d4edda' : categoryPercentage >= 50 ? '#fff3cd' : '#f8d7da'}; border-radius: 5px;">
                         <strong>${name}:</strong> ${categoryCorrect} из ${categoryQuestions.length} (${categoryPercentage}%)
                     </div>
                 `;
@@ -1549,7 +1776,7 @@
             document.getElementById('detailed-results').innerHTML = detailedResults;
             document.getElementById('results').style.display = 'block';
             
-            // Перерисовываем вопросы для отображения правильных/неправильных ответов
+            // Перерисовываем вопросы
             renderAllQuestions();
             
             // Прокручиваем к результатам
