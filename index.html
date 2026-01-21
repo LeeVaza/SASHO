@@ -29,7 +29,7 @@
         header {
             background: linear-gradient(to right, #2c3e50, #4a6491);
             color: white;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
         }
         h1 {
@@ -39,9 +39,48 @@
         .subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .search-container {
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+        #searchInput:focus {
+            outline: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a6491;
+            font-size: 1.2rem;
+        }
+        .search-info {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
         }
         .content {
-            padding: 30px;
+            padding: 20px 30px 30px;
         }
         .page {
             margin-bottom: 40px;
@@ -134,6 +173,19 @@
             border-top: 1px solid #eee;
             background-color: #f8f9fa;
         }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+            display: none;
+        }
         @media (max-width: 768px) {
             .container {
                 border-radius: 10px;
@@ -142,7 +194,7 @@
                 font-size: 2rem;
             }
             .content {
-                padding: 20px;
+                padding: 15px;
             }
             .page-title {
                 flex-direction: column;
@@ -150,6 +202,10 @@
             }
             .page-number {
                 margin-bottom: 10px;
+            }
+            #searchInput {
+                padding: 12px 15px 12px 45px;
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -159,11 +215,25 @@
         <header>
             <h1>Медицинские задания на английском</h1>
             <p class="subtitle">Полный сборник упражнений с ответами (129 страниц)</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" id="searchInput" placeholder="Поиск по заданиям...">
+                </div>
+                <div class="search-info">
+                    Введите слово или фразу для поиска по всем страницам
+                </div>
+            </div>
         </header>
         
         <div class="content">
+            <div class="no-results" id="noResults">
+                По вашему запросу ничего не найдено. Попробуйте изменить поисковый запрос.
+            </div>
+            
             <!-- Страница 1 -->
-            <div class="page">
+            <div class="page" data-page="1">
                 <div class="page-title">
                     <div class="page-number">1</div>
                     <h2>Find the proper definition</h2>
@@ -185,7 +255,7 @@
             </div>
 
             <!-- Страница 2 -->
-            <div class="page">
+            <div class="page" data-page="2">
                 <div class="page-title">
                     <div class="page-number">2</div>
                     <h2>Find the proper definition</h2>
@@ -207,7 +277,7 @@
             </div>
 
             <!-- Страница 3 -->
-            <div class="page">
+            <div class="page" data-page="3">
                 <div class="page-title">
                     <div class="page-number">3</div>
                     <h2>Give the opposite to the following words and word combinations</h2>
@@ -227,7 +297,7 @@
             </div>
 
             <!-- Страница 4 -->
-            <div class="page">
+            <div class="page" data-page="4">
                 <div class="page-title">
                     <div class="page-number">4</div>
                     <h2>Give the opposite to the following words and word combinations</h2>
@@ -249,7 +319,7 @@
             </div>
 
             <!-- Страница 5 -->
-            <div class="page">
+            <div class="page" data-page="5">
                 <div class="page-title">
                     <div class="page-number">5</div>
                     <h2>Give the synonyms to the following words and word combinations</h2>
@@ -271,7 +341,7 @@
             </div>
 
             <!-- Страница 6 -->
-            <div class="page">
+            <div class="page" data-page="6">
                 <div class="page-title">
                     <div class="page-number">6</div>
                     <h2>Match Left and Right to compose the most suitable meaningful word combinations</h2>
@@ -282,7 +352,7 @@
             </div>
 
             <!-- Страница 7 -->
-            <div class="page">
+            <div class="page" data-page="7">
                 <div class="page-title">
                     <div class="page-number">7</div>
                     <h2>Match Left and Right to compose the most suitable meaningful word combinations</h2>
@@ -304,7 +374,7 @@
             </div>
 
             <!-- Страница 8 -->
-            <div class="page">
+            <div class="page" data-page="8">
                 <div class="page-title">
                     <div class="page-number">8</div>
                     <h2>Match structures and their localization</h2>
@@ -326,7 +396,7 @@
             </div>
 
             <!-- Страница 9 -->
-            <div class="page">
+            <div class="page" data-page="9">
                 <div class="page-title">
                     <div class="page-number">9</div>
                     <h2>Match the opposites (antonyms)</h2>
@@ -337,7 +407,7 @@
             </div>
 
             <!-- Страница 10 -->
-            <div class="page">
+            <div class="page" data-page="10">
                 <div class="page-title">
                     <div class="page-number">10</div>
                     <h2>Match the synonyms</h2>
@@ -359,7 +429,7 @@
             </div>
 
             <!-- Страница 11 -->
-            <div class="page">
+            <div class="page" data-page="11">
                 <div class="page-title">
                     <div class="page-number">11</div>
                     <h2>Choose the proper ending to complete the sentence: abdomen is ...</h2>
@@ -374,7 +444,7 @@
             </div>
 
             <!-- Страница 12 -->
-            <div class="page">
+            <div class="page" data-page="12">
                 <div class="page-title">
                     <div class="page-number">12</div>
                     <h2>Choose the proper ending to complete the sentence: during respiration the exchange of gases takes place between:</h2>
@@ -389,7 +459,7 @@
             </div>
 
             <!-- Страница 13 -->
-            <div class="page">
+            <div class="page" data-page="13">
                 <div class="page-title">
                     <div class="page-number">13</div>
                     <h2>Choose the proper ending to complete the sentence: each lung is surrounded by ...</h2>
@@ -404,7 +474,7 @@
             </div>
 
             <!-- Страница 14 -->
-            <div class="page">
+            <div class="page" data-page="14">
                 <div class="page-title">
                     <div class="page-number">14</div>
                     <h2>Choose the proper ending to complete the sentence: interruption of breathing for only a few minutes may cause:</h2>
@@ -419,7 +489,7 @@
             </div>
 
             <!-- Страница 15 -->
-            <div class="page">
+            <div class="page" data-page="15">
                 <div class="page-title">
                     <div class="page-number">15</div>
                     <h2>Choose the proper ending to complete the sentence: one must know that smoking is ...</h2>
@@ -434,7 +504,7 @@
             </div>
 
             <!-- Страница 16 -->
-            <div class="page">
+            <div class="page" data-page="16">
                 <div class="page-title">
                     <div class="page-number">16</div>
                     <h2>Choose the proper ending to complete the sentence: respiration occurs in ...</h2>
@@ -449,7 +519,7 @@
             </div>
 
             <!-- Страница 17 -->
-            <div class="page">
+            <div class="page" data-page="17">
                 <div class="page-title">
                     <div class="page-number">17</div>
                     <h2>Choose the proper ending to complete the sentence: the air passes from the windpipe:</h2>
@@ -464,7 +534,7 @@
             </div>
 
             <!-- Страница 18 -->
-            <div class="page">
+            <div class="page" data-page="18">
                 <div class="page-title">
                     <div class="page-number">18</div>
                     <h2>Choose the proper ending to complete the sentence: the gallbladder is:</h2>
@@ -479,7 +549,7 @@
             </div>
 
             <!-- Страница 19 -->
-            <div class="page">
+            <div class="page" data-page="19">
                 <div class="page-title">
                     <div class="page-number">19</div>
                     <h2>Choose the proper ending to complete the sentence: the largest gland of the digestive tract is:</h2>
@@ -494,7 +564,7 @@
             </div>
 
             <!-- Страница 20 -->
-            <div class="page">
+            <div class="page" data-page="20">
                 <div class="page-title">
                     <div class="page-number">20</div>
                     <h2>Choose the proper ending to complete the sentence: the vital capacity of the lungs is ...</h2>
@@ -509,7 +579,7 @@
             </div>
 
             <!-- Страница 21 -->
-            <div class="page">
+            <div class="page" data-page="21">
                 <div class="page-title">
                     <div class="page-number">21</div>
                     <h2>Make sentence from the following words</h2>
@@ -521,7 +591,7 @@
             </div>
 
             <!-- Страница 22 -->
-            <div class="page">
+            <div class="page" data-page="22">
                 <div class="page-title">
                     <div class="page-number">22</div>
                     <h2>Make sentence from the following words</h2>
@@ -533,7 +603,7 @@
             </div>
 
             <!-- Страница 23 -->
-            <div class="page">
+            <div class="page" data-page="23">
                 <div class="page-title">
                     <div class="page-number">23</div>
                     <h2>Make sentence from the following words</h2>
@@ -545,7 +615,7 @@
             </div>
 
             <!-- Страница 24 -->
-            <div class="page">
+            <div class="page" data-page="24">
                 <div class="page-title">
                     <div class="page-number">24</div>
                     <h2>Make sentence from the following words</h2>
@@ -557,7 +627,7 @@
             </div>
 
             <!-- Страница 25 -->
-            <div class="page">
+            <div class="page" data-page="25">
                 <div class="page-title">
                     <div class="page-number">25</div>
                     <h2>Make sentence from the following words</h2>
@@ -569,7 +639,7 @@
             </div>
 
             <!-- Страница 26 -->
-            <div class="page">
+            <div class="page" data-page="26">
                 <div class="page-title">
                     <div class="page-number">26</div>
                     <h2>Make sentence from the following words</h2>
@@ -581,7 +651,7 @@
             </div>
 
             <!-- Страница 27 -->
-            <div class="page">
+            <div class="page" data-page="27">
                 <div class="page-title">
                     <div class="page-number">27</div>
                     <h2>Make sentence from the following words</h2>
@@ -593,7 +663,7 @@
             </div>
 
             <!-- Страница 28 -->
-            <div class="page">
+            <div class="page" data-page="28">
                 <div class="page-title">
                     <div class="page-number">28</div>
                     <h2>Make sentence from the following words</h2>
@@ -605,7 +675,7 @@
             </div>
 
             <!-- Страница 29 -->
-            <div class="page">
+            <div class="page" data-page="29">
                 <div class="page-title">
                     <div class="page-number">29</div>
                     <h2>Make sentence from the following words</h2>
@@ -617,7 +687,7 @@
             </div>
 
             <!-- Страница 30 -->
-            <div class="page">
+            <div class="page" data-page="30">
                 <div class="page-title">
                     <div class="page-number">30</div>
                     <h2>Choose the correct translation: he was made the diagnosis of bronchitis.</h2>
@@ -632,7 +702,7 @@
             </div>
 
             <!-- Страница 31 -->
-            <div class="page">
+            <div class="page" data-page="31">
                 <div class="page-title">
                     <div class="page-number">31</div>
                     <h2>Choose the correct translation: he was pushed away from the electric wire.</h2>
@@ -647,7 +717,7 @@
             </div>
 
             <!-- Страница 32 -->
-            <div class="page">
+            <div class="page" data-page="32">
                 <div class="page-title">
                     <div class="page-number">32</div>
                     <h2>Choose the correct translation: she was being set the fracture.</h2>
@@ -662,7 +732,7 @@
             </div>
 
             <!-- Страница 33 -->
-            <div class="page">
+            <div class="page" data-page="33">
                 <div class="page-title">
                     <div class="page-number">33</div>
                     <h2>Choose the correct translation: the boy has seen somebody there.</h2>
@@ -677,7 +747,7 @@
             </div>
 
             <!-- Страница 34 -->
-            <div class="page">
+            <div class="page" data-page="34">
                 <div class="page-title">
                     <div class="page-number">34</div>
                     <h2>Choose the correct translation: the child has been taken hot tea.</h2>
@@ -692,7 +762,7 @@
             </div>
 
             <!-- Страница 35 -->
-            <div class="page">
+            <div class="page" data-page="35">
                 <div class="page-title">
                     <div class="page-number">35</div>
                     <h2>Choose the correct translation: the doctor has been given tests results.</h2>
@@ -707,7 +777,7 @@
             </div>
 
             <!-- Страница 36 -->
-            <div class="page">
+            <div class="page" data-page="36">
                 <div class="page-title">
                     <div class="page-number">36</div>
                     <h2>Choose the correct translation: the girl is often sent SMS messages.</h2>
@@ -722,7 +792,7 @@
             </div>
 
             <!-- Страница 37 -->
-            <div class="page">
+            <div class="page" data-page="37">
                 <div class="page-title">
                     <div class="page-number">37</div>
                     <h2>Choose the correct translation: the nurse was helping to dress the wound.</h2>
@@ -737,7 +807,7 @@
             </div>
 
             <!-- Страница 38 -->
-            <div class="page">
+            <div class="page" data-page="38">
                 <div class="page-title">
                     <div class="page-number">38</div>
                     <h2>Choose the correct translation: the patient is sometimes given the medicine.</h2>
@@ -752,7 +822,7 @@
             </div>
 
             <!-- Страница 39 -->
-            <div class="page">
+            <div class="page" data-page="39">
                 <div class="page-title">
                     <div class="page-number">39</div>
                     <h2>Choose the correct translation: the woman is being operated.</h2>
@@ -767,7 +837,7 @@
             </div>
 
             <!-- Страница 40 -->
-            <div class="page">
+            <div class="page" data-page="40">
                 <div class="page-title">
                     <div class="page-number">40</div>
                     <h2>Complete the following sentence: in the adult the skeleton ... over 200 bones.</h2>
@@ -782,7 +852,7 @@
             </div>
 
             <!-- Страница 41 -->
-            <div class="page">
+            <div class="page" data-page="41">
                 <div class="page-title">
                     <div class="page-number">41</div>
                     <h2>Complete the following sentence: the breastbone is a long bone... of the chest.</h2>
@@ -797,7 +867,7 @@
             </div>
 
             <!-- Страница 42 -->
-            <div class="page">
+            <div class="page" data-page="42">
                 <div class="page-title">
                     <div class="page-number">42</div>
                     <h2>Complete the following sentence: the chest ... from the abdomen by the diaphragm.</h2>
@@ -812,7 +882,7 @@
             </div>
 
             <!-- Страница 43 -->
-            <div class="page">
+            <div class="page" data-page="43">
                 <div class="page-title">
                     <div class="page-number">43</div>
                     <h2>Complete the following sentence: the chest... by several pairs of ribs, breastbone and spine.</h2>
@@ -827,7 +897,7 @@
             </div>
 
             <!-- Страница 44 -->
-            <div class="page">
+            <div class="page" data-page="44">
                 <div class="page-title">
                     <div class="page-number">44</div>
                     <h2>Complete the following sentence: the eleventh and the twelfth ribs.... the breastbone.</h2>
@@ -842,7 +912,7 @@
             </div>
 
             <!-- Страница 45 -->
-            <div class="page">
+            <div class="page" data-page="45">
                 <div class="page-title">
                     <div class="page-number">45</div>
                     <h2>Complete the following sentence: the function of the stomach is to .... food and serve as its container.</h2>
@@ -857,7 +927,7 @@
             </div>
 
             <!-- Страница 46 -->
-            <div class="page">
+            <div class="page" data-page="46">
                 <div class="page-title">
                     <div class="page-number">46</div>
                     <h2>Complete the following sentence: the lower extremity is connected with the trunk by the...</h2>
@@ -872,7 +942,7 @@
             </div>
 
             <!-- Страница 47 -->
-            <div class="page">
+            <div class="page" data-page="47">
                 <div class="page-title">
                     <div class="page-number">47</div>
                     <h2>Complete the following sentence: the lower extremity... of thigh, lower leg and foot.</h2>
@@ -887,7 +957,7 @@
             </div>
 
             <!-- Страница 48 -->
-            <div class="page">
+            <div class="page" data-page="48">
                 <div class="page-title">
                     <div class="page-number">48</div>
                     <h2>Complete the following sentence: the shoulder blade and the ... make up the shoulder.</h2>
@@ -902,7 +972,7 @@
             </div>
 
             <!-- Страница 49 -->
-            <div class="page">
+            <div class="page" data-page="49">
                 <div class="page-title">
                     <div class="page-number">49</div>
                     <h2>Complete the following sentence: the spine ... of the cervical, thoracic, lumbar and sacral vertebrae and the coccyx.</h2>
@@ -917,7 +987,7 @@
             </div>
 
             <!-- Страница 50 -->
-            <div class="page">
+            <div class="page" data-page="50">
                 <div class="page-title">
                     <div class="page-number">50</div>
                     <h2>Find an English equivalent to the following word: анамнез</h2>
@@ -931,7 +1001,7 @@
             </div>
 
             <!-- Страница 51 -->
-            <div class="page">
+            <div class="page" data-page="51">
                 <div class="page-title">
                     <div class="page-number">51</div>
                     <h2>Find an English equivalent to the following word: выздоровление</h2>
@@ -945,7 +1015,7 @@
             </div>
 
             <!-- Страница 52 -->
-            <div class="page">
+            <div class="page" data-page="52">
                 <div class="page-title">
                     <div class="page-number">52</div>
                     <h2>Find an English equivalent to the following word: выписать лекарство от</h2>
@@ -959,7 +1029,7 @@
             </div>
 
             <!-- Страница 53 -->
-            <div class="page">
+            <div class="page" data-page="53">
                 <div class="page-title">
                     <div class="page-number">53</div>
                     <h2>Find an English equivalent to the following word: жаловаться</h2>
@@ -973,7 +1043,7 @@
             </div>
 
             <!-- Страница 54 -->
-            <div class="page">
+            <div class="page" data-page="54">
                 <div class="page-title">
                     <div class="page-number">54</div>
                     <h2>Find an English equivalent to the following word: одноразовый шприц</h2>
@@ -987,7 +1057,7 @@
             </div>
 
             <!-- Страница 55 -->
-            <div class="page">
+            <div class="page" data-page="55">
                 <div class="page-title">
                     <div class="page-number">55</div>
                     <h2>Find an English equivalent to the following word: первоначальный диагноз</h2>
@@ -1001,7 +1071,7 @@
             </div>
 
             <!-- Страница 56 -->
-            <div class="page">
+            <div class="page" data-page="56">
                 <div class="page-title">
                     <div class="page-number">56</div>
                     <h2>Find an English equivalent to the following word: приёмное отделение</h2>
@@ -1015,7 +1085,7 @@
             </div>
 
             <!-- Страница 57 -->
-            <div class="page">
+            <div class="page" data-page="57">
                 <div class="page-title">
                     <div class="page-number">57</div>
                     <h2>Find an English equivalent to the following word: принимающий доктор</h2>
@@ -1029,7 +1099,7 @@
             </div>
 
             <!-- Страница 58 -->
-            <div class="page">
+            <div class="page" data-page="58">
                 <div class="page-title">
                     <div class="page-number">58</div>
                     <h2>Find an English equivalent to the following word: развиваться</h2>
@@ -1043,7 +1113,7 @@
             </div>
 
             <!-- Страница 59 -->
-            <div class="page">
+            <div class="page" data-page="59">
                 <div class="page-title">
                     <div class="page-number">59</div>
                     <h2>Find an English equivalent to the following word: состояние</h2>
@@ -1057,7 +1127,7 @@
             </div>
 
             <!-- Страница 60 -->
-            <div class="page">
+            <div class="page" data-page="60">
                 <div class="page-title">
                     <div class="page-number">60</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1073,7 +1143,7 @@
             </div>
 
             <!-- Страница 61 -->
-            <div class="page">
+            <div class="page" data-page="61">
                 <div class="page-title">
                     <div class="page-number">61</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1088,7 +1158,7 @@
             </div>
 
             <!-- Страница 62 -->
-            <div class="page">
+            <div class="page" data-page="62">
                 <div class="page-title">
                     <div class="page-number">62</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1103,7 +1173,7 @@
             </div>
 
             <!-- Страница 63 -->
-            <div class="page">
+            <div class="page" data-page="63">
                 <div class="page-title">
                     <div class="page-number">63</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1118,7 +1188,7 @@
             </div>
 
             <!-- Страница 64 -->
-            <div class="page">
+            <div class="page" data-page="64">
                 <div class="page-title">
                     <div class="page-number">64</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1134,7 +1204,7 @@
             </div>
 
             <!-- Страница 65 -->
-            <div class="page">
+            <div class="page" data-page="65">
                 <div class="page-title">
                     <div class="page-number">65</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1149,7 +1219,7 @@
             </div>
 
             <!-- Страница 66 -->
-            <div class="page">
+            <div class="page" data-page="66">
                 <div class="page-title">
                     <div class="page-number">66</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1164,7 +1234,7 @@
             </div>
 
             <!-- Страница 67 -->
-            <div class="page">
+            <div class="page" data-page="67">
                 <div class="page-title">
                     <div class="page-number">67</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1179,7 +1249,7 @@
             </div>
 
             <!-- Страница 68 -->
-            <div class="page">
+            <div class="page" data-page="68">
                 <div class="page-title">
                     <div class="page-number">68</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1194,7 +1264,7 @@
             </div>
 
             <!-- Страница 69 -->
-            <div class="page">
+            <div class="page" data-page="69">
                 <div class="page-title">
                     <div class="page-number">69</div>
                     <h2>Read the passage and answer the question</h2>
@@ -1210,7 +1280,7 @@
             </div>
 
             <!-- Страница 70 -->
-            <div class="page">
+            <div class="page" data-page="70">
                 <div class="page-title">
                     <div class="page-number">70</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1227,7 +1297,7 @@
             </div>
 
             <!-- Страница 71 -->
-            <div class="page">
+            <div class="page" data-page="71">
                 <div class="page-title">
                     <div class="page-number">71</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1244,7 +1314,7 @@
             </div>
 
             <!-- Страница 72 -->
-            <div class="page">
+            <div class="page" data-page="72">
                 <div class="page-title">
                     <div class="page-number">72</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1261,7 +1331,7 @@
             </div>
 
             <!-- Страница 73 -->
-            <div class="page">
+            <div class="page" data-page="73">
                 <div class="page-title">
                     <div class="page-number">73</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1278,7 +1348,7 @@
             </div>
 
             <!-- Страница 74 -->
-            <div class="page">
+            <div class="page" data-page="74">
                 <div class="page-title">
                     <div class="page-number">74</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1295,7 +1365,7 @@
             </div>
 
             <!-- Страница 75 -->
-            <div class="page">
+            <div class="page" data-page="75">
                 <div class="page-title">
                     <div class="page-number">75</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1312,7 +1382,7 @@
             </div>
 
             <!-- Страница 76 -->
-            <div class="page">
+            <div class="page" data-page="76">
                 <div class="page-title">
                     <div class="page-number">76</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1329,7 +1399,7 @@
             </div>
 
             <!-- Страница 77 -->
-            <div class="page">
+            <div class="page" data-page="77">
                 <div class="page-title">
                     <div class="page-number">77</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1346,7 +1416,7 @@
             </div>
 
             <!-- Страница 78 -->
-            <div class="page">
+            <div class="page" data-page="78">
                 <div class="page-title">
                     <div class="page-number">78</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1363,7 +1433,7 @@
             </div>
 
             <!-- Страница 79 -->
-            <div class="page">
+            <div class="page" data-page="79">
                 <div class="page-title">
                     <div class="page-number">79</div>
                     <h2>Read the text. Which of the sentences gives the main idea of the text?</h2>
@@ -1380,7 +1450,7 @@
             </div>
 
             <!-- Страница 80 -->
-            <div class="page">
+            <div class="page" data-page="80">
                 <div class="page-title">
                     <div class="page-number">80</div>
                     <h2>Combine the left and the right to make up a sentence</h2>
@@ -1391,7 +1461,7 @@
             </div>
 
             <!-- Страница 81 -->
-            <div class="page">
+            <div class="page" data-page="81">
                 <div class="page-title">
                     <div class="page-number">81</div>
                     <h2>Match left and right</h2>
@@ -1413,7 +1483,7 @@
             </div>
 
             <!-- Страница 82 -->
-            <div class="page">
+            <div class="page" data-page="82">
                 <div class="page-title">
                     <div class="page-number">82</div>
                     <h2>Match left and right</h2>
@@ -1435,7 +1505,7 @@
             </div>
 
             <!-- Страница 83 -->
-            <div class="page">
+            <div class="page" data-page="83">
                 <div class="page-title">
                     <div class="page-number">83</div>
                     <h2>Match left and right</h2>
@@ -1457,7 +1527,7 @@
             </div>
 
             <!-- Страница 84 -->
-            <div class="page">
+            <div class="page" data-page="84">
                 <div class="page-title">
                     <div class="page-number">84</div>
                     <h2>Match the definitions on the left with their equivalents on the right</h2>
@@ -1468,7 +1538,7 @@
             </div>
 
             <!-- Страница 85 -->
-            <div class="page">
+            <div class="page" data-page="85">
                 <div class="page-title">
                     <div class="page-number">85</div>
                     <h2>Match the English and Russian equivalents</h2>
@@ -1490,7 +1560,7 @@
             </div>
 
             <!-- Страница 86 -->
-            <div class="page">
+            <div class="page" data-page="86">
                 <div class="page-title">
                     <div class="page-number">86</div>
                     <h2>Match the English and Russian equivalents</h2>
@@ -1512,7 +1582,7 @@
             </div>
 
             <!-- Страница 87 -->
-            <div class="page">
+            <div class="page" data-page="87">
                 <div class="page-title">
                     <div class="page-number">87</div>
                     <h2>Match the left column with a proper word or phrase in the right one</h2>
@@ -1534,7 +1604,7 @@
             </div>
 
             <!-- Страница 88 -->
-            <div class="page">
+            <div class="page" data-page="88">
                 <div class="page-title">
                     <div class="page-number">88</div>
                     <h2>Match the words with their definitions</h2>
@@ -1556,7 +1626,7 @@
             </div>
 
             <!-- Страница 89 -->
-            <div class="page">
+            <div class="page" data-page="89">
                 <div class="page-title">
                     <div class="page-number">89</div>
                     <h2>Match word-combinations to compose sentences</h2>
@@ -1567,7 +1637,7 @@
             </div>
 
             <!-- Страница 90 -->
-            <div class="page">
+            <div class="page" data-page="90">
                 <div class="page-title">
                     <div class="page-number">90</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1579,7 +1649,7 @@
             </div>
 
             <!-- Страница 91 -->
-            <div class="page">
+            <div class="page" data-page="91">
                 <div class="page-title">
                     <div class="page-number">91</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1591,7 +1661,7 @@
             </div>
 
             <!-- Страница 92 -->
-            <div class="page">
+            <div class="page" data-page="92">
                 <div class="page-title">
                     <div class="page-number">92</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1603,7 +1673,7 @@
             </div>
 
             <!-- Страница 93 -->
-            <div class="page">
+            <div class="page" data-page="93">
                 <div class="page-title">
                     <div class="page-number">93</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1615,7 +1685,7 @@
             </div>
 
             <!-- Страница 94 -->
-            <div class="page">
+            <div class="page" data-page="94">
                 <div class="page-title">
                     <div class="page-number">94</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1627,7 +1697,7 @@
             </div>
 
             <!-- Страница 95 -->
-            <div class="page">
+            <div class="page" data-page="95">
                 <div class="page-title">
                     <div class="page-number">95</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1639,7 +1709,7 @@
             </div>
 
             <!-- Страница 96 -->
-            <div class="page">
+            <div class="page" data-page="96">
                 <div class="page-title">
                     <div class="page-number">96</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1651,7 +1721,7 @@
             </div>
 
             <!-- Страница 97 -->
-            <div class="page">
+            <div class="page" data-page="97">
                 <div class="page-title">
                     <div class="page-number">97</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1663,7 +1733,7 @@
             </div>
 
             <!-- Страница 98 -->
-            <div class="page">
+            <div class="page" data-page="98">
                 <div class="page-title">
                     <div class="page-number">98</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1675,7 +1745,7 @@
             </div>
 
             <!-- Страница 99 -->
-            <div class="page">
+            <div class="page" data-page="99">
                 <div class="page-title">
                     <div class="page-number">99</div>
                     <h2>Fill in the proper form of the verb</h2>
@@ -1687,7 +1757,7 @@
             </div>
 
             <!-- Страница 100 -->
-            <div class="page">
+            <div class="page" data-page="100">
                 <div class="page-title">
                     <div class="page-number">100</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1703,7 +1773,7 @@
             </div>
 
             <!-- Страница 101 -->
-            <div class="page">
+            <div class="page" data-page="101">
                 <div class="page-title">
                     <div class="page-number">101</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1719,7 +1789,7 @@
             </div>
 
             <!-- Страница 102 -->
-            <div class="page">
+            <div class="page" data-page="102">
                 <div class="page-title">
                     <div class="page-number">102</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1735,7 +1805,7 @@
             </div>
 
             <!-- Страница 103 -->
-            <div class="page">
+            <div class="page" data-page="103">
                 <div class="page-title">
                     <div class="page-number">103</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1751,7 +1821,7 @@
             </div>
 
             <!-- Страница 104 -->
-            <div class="page">
+            <div class="page" data-page="104">
                 <div class="page-title">
                     <div class="page-number">104</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1767,7 +1837,7 @@
             </div>
 
             <!-- Страница 105 -->
-            <div class="page">
+            <div class="page" data-page="105">
                 <div class="page-title">
                     <div class="page-number">105</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1783,7 +1853,7 @@
             </div>
 
             <!-- Страница 106 -->
-            <div class="page">
+            <div class="page" data-page="106">
                 <div class="page-title">
                     <div class="page-number">106</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1799,7 +1869,7 @@
             </div>
 
             <!-- Страница 107 -->
-            <div class="page">
+            <div class="page" data-page="107">
                 <div class="page-title">
                     <div class="page-number">107</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1815,7 +1885,7 @@
             </div>
 
             <!-- Страница 108 -->
-            <div class="page">
+            <div class="page" data-page="108">
                 <div class="page-title">
                     <div class="page-number">108</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1831,7 +1901,7 @@
             </div>
 
             <!-- Страница 109 -->
-            <div class="page">
+            <div class="page" data-page="109">
                 <div class="page-title">
                     <div class="page-number">109</div>
                     <h2>Read the given sentences and choose the correct ones according to the information on the first aid you know: (2 ответа и более)</h2>
@@ -1847,7 +1917,7 @@
             </div>
 
             <!-- Страница 110 -->
-            <div class="page">
+            <div class="page" data-page="110">
                 <div class="page-title">
                     <div class="page-number">110</div>
                     <h2>Choose the correct ending only: a physician makes the diagnosis on the basis of:</h2>
@@ -1862,7 +1932,7 @@
             </div>
 
             <!-- Страница 111 -->
-            <div class="page">
+            <div class="page" data-page="111">
                 <div class="page-title">
                     <div class="page-number">111</div>
                     <h2>Choose the correct ending only: after a car accident the patient was taken by :</h2>
@@ -1877,7 +1947,7 @@
             </div>
 
             <!-- Страница 112 -->
-            <div class="page">
+            <div class="page" data-page="112">
                 <div class="page-title">
                     <div class="page-number">112</div>
                     <h2>Choose the correct ending only: if a person falls ill he will:</h2>
@@ -1892,7 +1962,7 @@
             </div>
 
             <!-- Страница 113 -->
-            <div class="page">
+            <div class="page" data-page="113">
                 <div class="page-title">
                     <div class="page-number">113</div>
                     <h2>Choose the correct ending only: in the inpatient wards doctors examine patients during their:</h2>
@@ -1907,7 +1977,7 @@
             </div>
 
             <!-- Страница 114 -->
-            <div class="page">
+            <div class="page" data-page="114">
                 <div class="page-title">
                     <div class="page-number">114</div>
                     <h2>Choose the correct ending only: laboratory investigations are administered to:</h2>
@@ -1922,7 +1992,7 @@
             </div>
 
             <!-- Страница 115 -->
-            <div class="page">
+            <div class="page" data-page="115">
                 <div class="page-title">
                     <div class="page-number">115</div>
                     <h2>Choose the correct ending only: medical record includes information on:</h2>
@@ -1937,7 +2007,7 @@
             </div>
 
             <!-- Страница 116 -->
-            <div class="page">
+            <div class="page" data-page="116">
                 <div class="page-title">
                     <div class="page-number">116</div>
                     <h2>Choose the correct ending only: nurses take patients:</h2>
@@ -1952,7 +2022,7 @@
             </div>
 
             <!-- Страница 117 -->
-            <div class="page">
+            <div class="page" data-page="117">
                 <div class="page-title">
                     <div class="page-number">117</div>
                     <h2>Choose the correct ending only: the past history contains:</h2>
@@ -1967,7 +2037,7 @@
             </div>
 
             <!-- Страница 118 -->
-            <div class="page">
+            <div class="page" data-page="118">
                 <div class="page-title">
                     <div class="page-number">118</div>
                     <h2>Choose the correct ending only: when a patient is admitted to a hospital he/she is first taken to:</h2>
@@ -1982,7 +2052,7 @@
             </div>
 
             <!-- Страница 119 -->
-            <div class="page">
+            <div class="page" data-page="119">
                 <div class="page-title">
                     <div class="page-number">119</div>
                     <h2>Choose the correct ending only: when the time comes the doctor fixes the date of:</h2>
@@ -1997,7 +2067,7 @@
             </div>
 
             <!-- Страница 120 -->
-            <div class="page">
+            <div class="page" data-page="120">
                 <div class="page-title">
                     <div class="page-number">120</div>
                     <h2>Choose the correct verb form to complete the sentence: i gave her a medicine ______ the temperature down.</h2>
@@ -2011,7 +2081,7 @@
             </div>
 
             <!-- Страница 121 -->
-            <div class="page">
+            <div class="page" data-page="121">
                 <div class="page-title">
                     <div class="page-number">121</div>
                     <h2>Choose the correct verb form to complete the sentence: she applied a dressing ______ the bleeding.</h2>
@@ -2025,7 +2095,7 @@
             </div>
 
             <!-- Страница 122 -->
-            <div class="page">
+            <div class="page" data-page="122">
                 <div class="page-title">
                     <div class="page-number">122</div>
                     <h2>Choose the correct verb form to complete the sentence: the arm ______ should be immobilized.</h2>
@@ -2039,7 +2109,7 @@
             </div>
 
             <!-- Страница 123 -->
-            <div class="page">
+            <div class="page" data-page="123">
                 <div class="page-title">
                     <div class="page-number">123</div>
                     <h2>Choose the correct verb form to complete the sentence: the child ______ the world is in danger of an accident.</h2>
@@ -2053,7 +2123,7 @@
             </div>
 
             <!-- Страница 124 -->
-            <div class="page">
+            <div class="page" data-page="124">
                 <div class="page-title">
                     <div class="page-number">124</div>
                     <h2>Choose the correct verb form to complete the sentence: the doctor ______ to the patient's call came quickly.</h2>
@@ -2067,7 +2137,7 @@
             </div>
 
             <!-- Страница 125 -->
-            <div class="page">
+            <div class="page" data-page="125">
                 <div class="page-title">
                     <div class="page-number">125</div>
                     <h2>Choose the correct verb form to complete the sentence: the fracture ______ by a fall was not very dangerous.</h2>
@@ -2081,7 +2151,7 @@
             </div>
 
             <!-- Страница 126 -->
-            <div class="page">
+            <div class="page" data-page="126">
                 <div class="page-title">
                     <div class="page-number">126</div>
                     <h2>Choose the correct verb form to complete the sentence: the stick ______ the contact with electric current should be wooden.</h2>
@@ -2095,7 +2165,7 @@
             </div>
 
             <!-- Страница 127 -->
-            <div class="page">
+            <div class="page" data-page="127">
                 <div class="page-title">
                     <div class="page-number">127</div>
                     <h2>Choose the correct verb form to complete the sentence: the things ______ locked from the child included knives and scissors.</h2>
@@ -2109,7 +2179,7 @@
             </div>
 
             <!-- Страница 128 -->
-            <div class="page">
+            <div class="page" data-page="128">
                 <div class="page-title">
                     <div class="page-number">128</div>
                     <h2>Choose the correct verb form to complete the sentence: the vessels ______ blood to the lungs form the pulmonary circulation.</h2>
@@ -2123,7 +2193,7 @@
             </div>
 
             <!-- Страница 129 -->
-            <div class="page">
+            <div class="page" data-page="129">
                 <div class="page-title">
                     <div class="page-number">129</div>
                     <h2>Choose the correct verb form to complete the sentence: the wound ______ with an aseptic solution became better.</h2>
@@ -2142,5 +2212,105 @@
             <p>Медицинские задания на английском языке • Всего страниц: 129</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const pages = document.querySelectorAll('.page');
+            const noResults = document.getElementById('noResults');
+            
+            // Функция для поиска
+            function performSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                let hasResults = false;
+                
+                if (searchTerm === '') {
+                    // Показать все страницы, если поле поиска пустое
+                    pages.forEach(page => {
+                        page.style.display = 'block';
+                        removeHighlights(page);
+                    });
+                    noResults.style.display = 'none';
+                    return;
+                }
+                
+                pages.forEach(page => {
+                    const pageContent = page.textContent.toLowerCase();
+                    
+                    if (pageContent.includes(searchTerm)) {
+                        page.style.display = 'block';
+                        highlightText(page, searchTerm);
+                        hasResults = true;
+                    } else {
+                        page.style.display = 'none';
+                        removeHighlights(page);
+                    }
+                });
+                
+                if (hasResults) {
+                    noResults.style.display = 'none';
+                } else {
+                    noResults.style.display = 'block';
+                }
+            }
+            
+            // Функция для подсветки найденного текста
+            function highlightText(element, searchTerm) {
+                removeHighlights(element);
+                
+                const walker = document.createTreeWalker(
+                    element,
+                    NodeFilter.SHOW_TEXT,
+                    null,
+                    false
+                );
+                
+                let node;
+                const nodes = [];
+                
+                while (node = walker.nextNode()) {
+                    if (node.nodeType === 3 && node.textContent.toLowerCase().includes(searchTerm)) {
+                        nodes.push(node);
+                    }
+                }
+                
+                nodes.forEach(node => {
+                    const span = document.createElement('span');
+                    span.className = 'highlight';
+                    
+                    const text = node.textContent;
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    const newText = text.replace(regex, '<span class="highlight">$1</span>');
+                    
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = newText;
+                    
+                    node.parentNode.replaceChild(tempDiv.firstChild, node);
+                    while (tempDiv.firstChild) {
+                        node.parentNode.insertBefore(tempDiv.firstChild, node.nextSibling);
+                    }
+                });
+            }
+            
+            // Функция для удаления подсветки
+            function removeHighlights(element) {
+                const highlights = element.querySelectorAll('.highlight');
+                highlights.forEach(highlight => {
+                    const parent = highlight.parentNode;
+                    parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                    parent.normalize();
+                });
+            }
+            
+            // Обработчик событий для поиска
+            searchInput.addEventListener('input', performSearch);
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Escape') {
+                    searchInput.value = '';
+                    performSearch();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
